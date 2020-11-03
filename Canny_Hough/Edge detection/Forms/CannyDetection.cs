@@ -297,7 +297,7 @@ namespace Edge_detection
 
         private void button6_Click(object sender, EventArgs e)
         {
-            new HoughForm(pictureBox9.Image, pictureBox1.Image).Show();
+            new HoughForm(pictureBox9.Image, pictureBox1.Image, "lines").Show();
         }
     }
 }

@@ -156,7 +156,7 @@ namespace Edge_detection
                 }
         }
 
-        public static Bitmap TransformLine(Bitmap img, int tr)
+        public static Bitmap TransformLine(Bitmap img)
         {
             Point Size = new Point();
             int mang = 180;
@@ -180,19 +180,20 @@ namespace Edge_detection
             // Поиск максимума
             int amax = AccumMax(Size);
             // Нормализация 
+            Bitmap img1 = new Bitmap(img.Width, img.Height);
             if (amax != 0)
             {
-                img = new Bitmap(Size.X, Size.Y);
+                img1 = new Bitmap(Size.X, Size.Y);
                 // Нормализация в аккумулятор
                 Normalize(Size, amax);
                 for (int y = 0; y < Size.Y; y++)
                     for (int x = 0; x < Size.X; x++)
                     {
                         int c = Accum[y, x];
-                        img.SetPixel(x, y, Color.FromArgb(c, c, c));
+                        img1.SetPixel(x, y, Color.FromArgb(c, c, c));
                     }
             }
-            return img;
+            return img1;
         }
 
         public static Bitmap TransformCircle(Bitmap img, int r)
