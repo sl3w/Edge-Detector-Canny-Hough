@@ -1,22 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
-using System.Runtime.InteropServices;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Edge_detection
 {
-    static class ImageProcessing
+    class Edges
     {
         private static double[,] angles;
+
         private static Color WhiteBorder = Color.FromArgb(255, 255, 255);
         private static Color NotBorder = Color.FromArgb(0, 0, 0);
-
-        private static double[,] StandartGaussMatrix = new double[,] {
-                                    { 2, 4, 5, 4, 2 },
-                                    { 4, 9, 12, 9, 4 },
-                                    { 5, 12, 15, 12, 5 },
-                                    { 4, 9, 12, 9, 4 },
-                                    { 2, 4, 5, 4, 2 } };
 
         private static int[,] SobelX = new int[,] {
                                  { 1, 2, 1 },
@@ -28,78 +24,7 @@ namespace Edge_detection
                                  { -2, 0, 2 },
                                  { -1, 0, 1 } };
 
-        private static int[,] laplas = new int[,] {
-                                 { 0, 1, 0 },
-                                 { 1, -4, 1 },
-                                 { 0, 1, 0 } };
-
-        public static Bitmap ImageToGrey(Bitmap bmp)
-        {
-            Bitmap resbmp = new Bitmap(bmp.Width, bmp.Height);
-            byte brightness;
-            for (int i = 0; i < bmp.Width; i++)
-            {
-                for (int j = 0; j < bmp.Height; j++)
-                {
-                    brightness = (byte)(0.299 * bmp.GetPixel(i, j).R + 0.587 * bmp.GetPixel(i, j).G + 0.114 * bmp.GetPixel(i, j).B);
-                    resbmp.SetPixel(i, j, Color.FromArgb(brightness, brightness, brightness));
-                }
-            }
-            return resbmp;
-        }
-
-        public static Bitmap GaussianFilter(Bitmap bmp, double sigma)
-        {
-            Bitmap resbmp = new Bitmap(bmp);
-            for (int i = 2; i < bmp.Width - 2; i++)
-            {
-                for (int j = 2; j < bmp.Height - 2; j++)
-                {
-                    int[,] mas = new int[5, 5];
-
-                    for (int k = -2; k < 3; k++)
-                        for (int l = -2; l < 3; l++)
-                            mas[k + 2, l + 2] = bmp.GetPixel(i + k, j + l).B;
-
-
-                    int brightness = (int)MultGauss(mas, sigma);
-                    resbmp.SetPixel(i, j, Color.FromArgb(brightness, brightness, brightness));
-                }
-            }
-            return resbmp;
-        }
-
-
-        private static double MultGauss(int[,] matr, double sigma)
-        {
-            double br = 0;
-            double[,] gauss;
-            if (sigma == 0)
-                gauss = StandartGaussMatrix;
-            else
-                gauss = GetGaussMatrBySigma(sigma);
-            for (int i = 0; i < matr.GetLength(0); i++)
-                for (int j = 0; j < matr.GetLength(0); j++)
-                {
-                    br += (matr[i, j] * (gauss[i, j]));
-                }
-            if (sigma == 0)
-                br = br / 159;
-            return br;
-        }
-
-        private static double[,] GetGaussMatrBySigma(double sigma)
-        {
-            double[,] gauss = new double[5, 5];
-            for (int i = 1; i <= 5; i++)
-                for (int j = 1; j <= 5; j++)
-                {
-                    double e = Math.Exp(-(Math.Pow(i - 3, 2) + Math.Pow(j - 3, 2)) / (2 * Math.Pow(sigma, 2)));
-                    gauss[i - 1, j - 1] = (e / (2 * Math.PI * Math.Pow(sigma, 2)));
-                }
-            return gauss;
-        }
-
+        //фильтр Собеля
         public static Bitmap SobelConvolve(Bitmap bmp)
         {
             Bitmap resbmp = new Bitmap(bmp.Width, bmp.Height);
@@ -128,6 +53,52 @@ namespace Edge_detection
             return resbmp;
         }
 
+        public static Bitmap Sobel(Bitmap src)
+        {
+            Bitmap dst = new Bitmap(src.Width, src.Height);
+            angles = new double[src.Width, src.Height];
+
+            //оператор Собеля
+            int[,] dx = { { -1, 0, 1 }, { -2, 0, 2 }, { -1, 0, 1 } };
+            int[,] dy = { { 1, 2, 1 }, { 0, 0, 0 }, { -1, -2, -1 } };
+
+            int sumX, sumY, sum;
+            //'цикл прохода по всему изображению
+            for (int y = 0; y < src.Height - 1; y++)
+                for (int x = 0; x < src.Width - 1; x++)
+                {
+                    sumX = sumY = 0;
+                    if (y == 0 || y == src.Height - 1) sum = 0;
+                    else if (x == 0 || x == src.Width - 1) sum = 0;
+                    else
+                    {
+                        //цикл свертки оператором Собеля
+                        for (int i = -1; i < 2; i++)
+                            for (int j = -1; j < 2; j++)
+                            {
+                                //взять значение пикселя
+                                int c = src.GetPixel(x + i, y + j).R;
+                                //найти сумму произведений пикселя на значение из матрицы по X
+                                sumX += c * dx[i + 1, j + 1];
+                                //и сумму произведений пикселя на значение из матрицы по Y
+                                sumY += c * dy[i + 1, j + 1];
+                            }
+                        //найти приближенное значение величины градиента
+                        //sum = Math.Abs(sumX) + Math.Abs(sumY);
+                        sum = (int)Math.Sqrt(Math.Pow(sumX, 2) + Math.Pow(sumY, 2));
+                        double a = Math.Atan2(sumY, sumX) * 180 / Math.PI;
+                        angles[x, y] = GetAngleMult45(a);
+                    }
+                    //провести нормализацию
+                    if (sum > 255) sum = 255;
+                    else if (sum < 0) sum = 0;
+                    //записать результат в выходное изображение
+                    dst.SetPixel(x, y, Color.FromArgb(255, sum, sum, sum));
+                }
+            //Binarization(dst);
+            return dst;
+        }
+
         private static int SobelMult(int[,] matr, int[,] g)
         {
             int br = 0;
@@ -145,6 +116,7 @@ namespace Edge_detection
             return a;
         }
 
+        //подавление не-максимумов
         public static Bitmap NonMaximumSuppression(Bitmap bmp)
         {
             Bitmap resbmp = new Bitmap(bmp);
@@ -179,13 +151,15 @@ namespace Edge_detection
                         if ((bmp.GetPixel(i + 1, j + 1).B > bmp.GetPixel(i, j).B || bmp.GetPixel(i, j).B < bmp.GetPixel(i - 1, j - 1).B))
                         {
                             resbmp.SetPixel(i, j, NotBorder);
-                        }                         
+                        }
                     }
                 }
             }
             return resbmp;
         }
 
+
+        //двойная пороговая фильтрация
         public static Bitmap DoubleThreshold(Bitmap bmp, int top, int low)
         {
             Bitmap resbmp = new Bitmap(bmp);
@@ -215,6 +189,8 @@ namespace Edge_detection
             return resbmp;
         }
 
+
+        //трассировка области неоднозначности
         public static Bitmap EdgeTracking(Bitmap bmp)
         {
             Bitmap resbmp = new Bitmap(bmp);
@@ -253,6 +229,7 @@ namespace Edge_detection
             return resbmp;
         }
 
+        //восстановление границ
         public static Bitmap BorderRestoration(Bitmap bmp, int rad)
         {
             Bitmap resbmp = new Bitmap(bmp);
@@ -306,15 +283,17 @@ namespace Edge_detection
             return resbmp;
         }
 
+        //градиентный метод
         public static Bitmap FadeDetection(Bitmap bmp)
         {
             Bitmap resbmp = new Bitmap(bmp);
 
             angles = new double[bmp.Width, bmp.Height];
 
-            byte brightness = (byte)Math.Sqrt(Math.Pow((bmp.GetPixel(0, 0).G - bmp.GetPixel(1, 0).G), 2) + Math.Pow((bmp.GetPixel(0, 0).G - bmp.GetPixel(0, 1).G), 2));
-            resbmp.SetPixel(0, 0, Color.FromArgb(brightness, brightness, brightness));
+            //byte brightness = (byte)Math.Sqrt(Math.Pow((bmp.GetPixel(0, 0).G - bmp.GetPixel(1, 0).G), 2) + Math.Pow((bmp.GetPixel(0, 0).G - bmp.GetPixel(0, 1).G), 2));
+            //resbmp.SetPixel(0, 0, Color.FromArgb(brightness, brightness, brightness));
 
+            byte brightness;
             for (int i = 1; i < bmp.Width; i++)
             {
                 for (int j = 1; j < bmp.Height; j++)
@@ -354,26 +333,8 @@ namespace Edge_detection
             return resbmp;
         }
 
-        public static Bitmap FadeLaplassThreshold(Bitmap bmp, int border)
-        {
-            Bitmap resbmp = new Bitmap(bmp);
-            byte brightness;
-            for (int i = 0; i < bmp.Width - 1; i++)
-            {
-                for (int j = 0; j < bmp.Height - 1; j++)
-                {
-                    brightness = bmp.GetPixel(i, j).B;
-                    if (brightness < border)
-                        brightness = 0;
-                    else
-                        brightness = 255;
-                    resbmp.SetPixel(i, j, Color.FromArgb(brightness, brightness, brightness));
-                }
-            }
-            return resbmp;
-        }
-
-        public static Bitmap LaplassianDetection(Bitmap bmp)
+        //метод на основе лапласиана
+        public static Bitmap LaplacianDetection(Bitmap bmp)
         {
             Bitmap resbmp = new Bitmap(bmp);
 
@@ -432,20 +393,6 @@ namespace Edge_detection
                 resbmp.SetPixel(i, j, Color.FromArgb(brightness, brightness, brightness));
             }
             return resbmp;
-        }
-
-        public static Bitmap ReverseColor(Bitmap bmp)
-        {
-            for (int i = 0; i < bmp.Width; i++)
-            {
-                for (int j = 0; j < bmp.Height; j++)
-                {
-                    byte B = bmp.GetPixel(i, j).B;
-                    B = (byte)Math.Abs(255 - B);
-                    bmp.SetPixel(i, j, Color.FromArgb(B, B, B));
-                }
-            }
-            return bmp;
         }
     }
 }

@@ -7,3 +7,12 @@ C:\Users\lenya\Desktop\1.Программа\obj\Debug\HoughTransform.csproj.Gene
 C:\Users\lenya\Desktop\1.Программа\obj\Debug\HoughTransform.csproj.CoreCompileInputs.cache
 C:\Users\lenya\Desktop\1.Программа\obj\Debug\HoughTransform.exe
 C:\Users\lenya\Desktop\1.Программа\obj\Debug\HoughTransform.pdb
+C:\Users\lenya\Desktop\Canny-Hough\Hough\bin\Debug\HoughTransform.exe
+C:\Users\lenya\Desktop\Canny-Hough\Hough\bin\Debug\HoughTransform.pdb
+C:\Users\lenya\Desktop\Canny-Hough\Hough\obj\Debug\HoughTransform.csprojAssemblyReference.cache
+C:\Users\lenya\Desktop\Canny-Hough\Hough\obj\Debug\WindowsFormsApplication1.Form1.resources
+C:\Users\lenya\Desktop\Canny-Hough\Hough\obj\Debug\WindowsFormsApplication1.Properties.Resources.resources
+C:\Users\lenya\Desktop\Canny-Hough\Hough\obj\Debug\HoughTransform.csproj.GenerateResource.cache
+C:\Users\lenya\Desktop\Canny-Hough\Hough\obj\Debug\HoughTransform.csproj.CoreCompileInputs.cache
+C:\Users\lenya\Desktop\Canny-Hough\Hough\obj\Debug\HoughTransform.exe
+C:\Users\lenya\Desktop\Canny-Hough\Hough\obj\Debug\HoughTransform.pdb

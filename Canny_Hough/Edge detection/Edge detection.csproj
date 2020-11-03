@@ -45,42 +45,54 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="About.cs">
+    <Compile Include="Forms\About.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="About.Designer.cs">
+    <Compile Include="Forms\About.Designer.cs">
       <DependentUpon>About.cs</DependentUpon>
     </Compile>
-    <Compile Include="LoadAndSaveImage.cs" />
-    <Compile Include="MainChooseForm.cs">
+    <Compile Include="HoughForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainChooseForm.Designer.cs">
+    <Compile Include="HoughForm.Designer.cs">
+      <DependentUpon>HoughForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ImageProcessing\Edges.cs" />
+    <Compile Include="ImageProcessing\Filters.cs" />
+    <Compile Include="ImageProcessing\Hough.cs" />
+    <Compile Include="LoadAndSaveImage.cs" />
+    <Compile Include="Forms\MainChooseForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MainChooseForm.Designer.cs">
       <DependentUpon>MainChooseForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="FadeLaplasDetection.cs">
+    <Compile Include="Forms\FadeLaplasDetection.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FadeLaplasDetection.Designer.cs">
+    <Compile Include="Forms\FadeLaplasDetection.Designer.cs">
       <DependentUpon>FadeLaplasDetection.cs</DependentUpon>
     </Compile>
-    <Compile Include="ImageProcessing.cs" />
+    <Compile Include="ImageProcessing\ImageProcessing.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="CannyDetection.cs">
+    <Compile Include="Forms\CannyDetection.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CannyDetection.Designer.cs">
+    <Compile Include="Forms\CannyDetection.Designer.cs">
       <DependentUpon>CannyDetection.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="About.resx">
+    <EmbeddedResource Include="Forms\About.resx">
       <DependentUpon>About.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainChooseForm.resx">
+    <EmbeddedResource Include="Forms\MainChooseForm.resx">
       <DependentUpon>MainChooseForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FadeLaplasDetection.resx">
+    <EmbeddedResource Include="Forms\FadeLaplasDetection.resx">
       <DependentUpon>FadeLaplasDetection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HoughForm.resx">
+      <DependentUpon>HoughForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -92,7 +104,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="CannyDetection.resx">
+    <EmbeddedResource Include="Forms\CannyDetection.resx">
       <DependentUpon>CannyDetection.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="ClassDiagram1.cd" />

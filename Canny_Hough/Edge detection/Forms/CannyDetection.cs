@@ -35,7 +35,7 @@ namespace Edge_detection
             pictureBox7.Image = null;
             pictureBox8.Image = null;
             pictureBox9.Image = null;
-            button1.Enabled = groupBox1.Enabled = false;
+            button1.Enabled = button6.Enabled = groupBox1.Enabled = false;
             thread = new Thread(StartProcessing);
             thread.Start();
         }
@@ -56,62 +56,81 @@ namespace Edge_detection
             else
                 afterGrey = new Bitmap(pictureBox2.Image);
 
+            ShowSelectedImage();
+
             Bitmap afterGauss;
             if (checkBox1.Checked)
             {
                 double sigma = 0;
                 if (radioButton2.Checked)
                     sigma = (double)numericUpDown4.Value;
-                afterGauss = ImageProcessing.GaussianFilter(afterGrey, sigma);
+                afterGauss = Filters.GaussianFilter(afterGrey, sigma);
             }
             else
                 afterGauss = afterGrey;
 
+            ShowSelectedImage();
+
             pictureBox3.Invoke(new Action(() => pictureBox3.Image = new Bitmap(afterGauss)));
 
-            Bitmap afterSobel = ImageProcessing.SobelConvolve(afterGauss);
+            ShowSelectedImage();
+
+            Bitmap afterSobel = Edges.SobelConvolve(afterGauss);
+            Bitmap afterSobel2 = Edges.Sobel(afterGauss);
             pictureBox4.Invoke(new Action(() => pictureBox4.Image = new Bitmap(afterSobel)));
+            pictureBox14.Invoke(new Action(() => pictureBox14.Image = new Bitmap(afterSobel2)));
+            ShowSelectedImage();
 
-            afterSuppression = ImageProcessing.NonMaximumSuppression(afterSobel);
+            afterSuppression = Edges.NonMaximumSuppression(afterSobel);
+            Bitmap afterSuppression2 = Edges.NonMaximumSuppression(afterSobel2);
             pictureBox5.Invoke(new Action(() => pictureBox5.Image = new Bitmap(afterSuppression)));
+            pictureBox15.Invoke(new Action(() => pictureBox15.Image = new Bitmap(afterSuppression2)));
 
-            Bitmap afterThreshold = ImageProcessing.DoubleThreshold(afterSuppression, trackBar3.Value, trackBar2.Value);
+            ShowSelectedImage();
+
+            Bitmap afterThreshold = Edges.DoubleThreshold(afterSuppression, trackBar3.Value, trackBar2.Value);
+            Bitmap afterThreshold2 = Edges.DoubleThreshold(afterSuppression2, trackBar3.Value, trackBar2.Value);
             pictureBox6.Invoke(new Action(() => pictureBox6.Image = new Bitmap(afterThreshold)));
+            pictureBox16.Invoke(new Action(() => pictureBox16.Image = new Bitmap(afterThreshold2)));
+            ShowSelectedImage();
 
-            afterEdgeTrack = ImageProcessing.EdgeTracking(afterThreshold);
-            pictureBox7.Invoke(new Action(() => pictureBox7.Image = new Bitmap(afterEdgeTrack)));;
+            afterEdgeTrack = Edges.EdgeTracking(afterThreshold);
+            Bitmap afterEdgeTrack2 = Edges.EdgeTracking(afterThreshold2);
+            pictureBox7.Invoke(new Action(() => pictureBox7.Image = new Bitmap(afterEdgeTrack)));
+            pictureBox17.Invoke(new Action(() => pictureBox17.Image = new Bitmap(afterEdgeTrack2)));
+            ShowSelectedImage();
 
-            Bitmap afterRestoration = ImageProcessing.BorderRestoration(afterEdgeTrack, trackBar4.Value);
+            Bitmap afterRestoration = Edges.BorderRestoration(afterEdgeTrack, trackBar4.Value);
             pictureBox8.Invoke(new Action(() => pictureBox8.Image = new Bitmap(afterRestoration)));
 
             ShowSelectedImage();
-            button1.Enabled = groupBox1.Enabled = true;
+            button1.Enabled = button6.Enabled = groupBox1.Enabled = true;
             thread.Abort();
         }
 
         private void WorkFromThreshold()
         {
-            Bitmap afterThreshold = ImageProcessing.DoubleThreshold(afterSuppression, trackBar3.Value, trackBar2.Value);
+            Bitmap afterThreshold = Edges.DoubleThreshold(afterSuppression, trackBar3.Value, trackBar2.Value);
             pictureBox6.Invoke(new Action(() => pictureBox6.Image = new Bitmap(afterThreshold)));
 
-            afterEdgeTrack = ImageProcessing.EdgeTracking(afterThreshold);
+            afterEdgeTrack = Edges.EdgeTracking(afterThreshold);
             pictureBox7.Invoke(new Action(() => pictureBox7.Image = new Bitmap(afterEdgeTrack)));
 
-            Bitmap afterRestoration = ImageProcessing.BorderRestoration(afterEdgeTrack, trackBar4.Value);
+            Bitmap afterRestoration = Edges.BorderRestoration(afterEdgeTrack, trackBar4.Value);
             pictureBox8.Invoke(new Action(() => pictureBox8.Image = new Bitmap(afterRestoration)));
 
             ShowSelectedImage();
-            button1.Enabled = groupBox1.Enabled = true;
+            button1.Enabled = button6.Enabled = groupBox1.Enabled = true;
             thread.Abort();
         }
 
         private void WorkBorderRestorOnly()
         { 
-            Bitmap afterRestoration = ImageProcessing.BorderRestoration(afterEdgeTrack, trackBar4.Value);
+            Bitmap afterRestoration = Edges.BorderRestoration(afterEdgeTrack, trackBar4.Value);
             pictureBox8.Invoke(new Action(() => pictureBox8.Image = new Bitmap(afterRestoration)));
 
             ShowSelectedImage();
-            button1.Enabled = groupBox1.Enabled = true;
+            button1.Enabled = button6.Enabled = groupBox1.Enabled = true;
             thread.Abort();
         }
 
@@ -135,7 +154,7 @@ namespace Edge_detection
             pictureBox6.Image = null;
             pictureBox7.Image = null;
             pictureBox8.Image = null;
-            button1.Enabled = groupBox1.Enabled = false;
+            button1.Enabled = button6.Enabled = groupBox1.Enabled = false;
             thread = new Thread(WorkFromThreshold);
             thread.Start();
         }
@@ -193,9 +212,11 @@ namespace Edge_detection
         {
             int x = trackBar1.Value;
             PictureBox pb = sender as PictureBox;
-            trackBar1.Value = int.Parse(pb.Name[10].ToString());
-            if (trackBar1.Value == x)
-                ShowSelectedImage();
+            //test
+            //trackBar1.Value = int.Parse(pb.Name.Substring(10));
+            pictureBox9.Image = pb.Image;
+            //if (trackBar1.Value == x)
+              //  ShowSelectedImage();
         }
 
         private void trackBar4_ValueChanged(object sender, EventArgs e)
@@ -211,7 +232,7 @@ namespace Edge_detection
         private void trackBar4_MouseUp(object sender, MouseEventArgs e)
         {
             pictureBox8.Image = null;
-            button1.Enabled = groupBox1.Enabled = false;
+            button1.Enabled = button6.Enabled = groupBox1.Enabled = false;
             thread = new Thread(WorkBorderRestorOnly);
             thread.Start();
         }
@@ -272,6 +293,11 @@ namespace Edge_detection
         {
             pictureBox9.Width = panel1.Width;
             pictureBox9.Height = panel1.Height;
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            new HoughForm(pictureBox9.Image, pictureBox1.Image).Show();
         }
     }
 }

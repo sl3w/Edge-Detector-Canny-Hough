@@ -53,7 +53,7 @@ namespace Edge_detection
                 double sigma = 0;
                 if (radioButton2.Checked)
                     sigma = (double)numericUpDown4.Value;
-                afterGauss = ImageProcessing.GaussianFilter(afterGrey, sigma);
+                afterGauss = Filters.GaussianFilter(afterGrey, sigma);
             }
             else
                 afterGauss = afterGrey;
@@ -61,9 +61,9 @@ namespace Edge_detection
             pictureBox3.Invoke(new Action(() => pictureBox3.Image = new Bitmap(afterGauss)));
 
             if (isGradient)
-                afterFade = ImageProcessing.FadeDetection(afterGauss);
+                afterFade = Edges.FadeDetection(afterGauss);
             else
-                afterFade = ImageProcessing.LaplassianDetection(afterGauss);
+                afterFade = Edges.LaplacianDetection(afterGauss);
             pictureBox4.Invoke(new Action(() => pictureBox4.Image = new Bitmap(afterFade)));
 
             Bitmap afterThreshold = ImageProcessing.FadeLaplassThreshold(afterFade, trackBar2.Value);
@@ -154,25 +154,6 @@ namespace Edge_detection
 
         private void SaveResult()
         {
-            //saveFileDialog1.FileName = "Обработанное изображение";
-            //saveFileDialog1.Title = "Сохранение";
-            ////отображать ли предупреждение, если пользователь указывает имя уже существующего файла
-            //saveFileDialog1.OverwritePrompt = true;
-            ////отображать ли предупреждение, если пользователь указывает несуществующий путь
-            //saveFileDialog1.CheckPathExists = true;
-            //saveFileDialog1.Filter = "JPEG (*.JPG)|*.jpg|PNG (*.PNG)|*.png|BMP (*.BMP)|*.bmp|GIF (*.GIF)|*.gif";
-            //if (saveFileDialog1.ShowDialog() == DialogResult.OK) //если в диалоговом окне нажата кнопка "ОК"
-            //{
-            //    try
-            //    {
-            //        pictureBox8.Image.Save(saveFileDialog1.FileName);
-            //    }
-            //    catch
-            //    {
-            //        MessageBox.Show("Ошибка при сохранении изображения", "Ошибка",
-            //        MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //    }
-            //}
             LoadAndSaveImage.SaveImage(pictureBox8.Image);
         }
 

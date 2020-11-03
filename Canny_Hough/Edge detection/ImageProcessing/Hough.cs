@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace WindowsFormsApplication1
+namespace Edge_detection
 {
     class Hough
     {
-        public int[,] Accum;
+        public static int[,] Accum;
 
         /**** Преобразование в полутоновое ****/
-        public void GrayScale(Bitmap img)
+        public static void GrayScale(Bitmap img)
         {
             for (int y = 0; y < img.Height; y++)
                 for (int x = 0; x < img.Width; x++)
@@ -24,7 +25,7 @@ namespace WindowsFormsApplication1
         }
 
         /**** Бинаризация изображения ****/
-        public Bitmap Binarization(Bitmap img)
+        public static Bitmap Binarization(Bitmap img)
         {
             double threshold = 0.7;
             for (int y = 0; y < img.Height; y++)
@@ -34,7 +35,7 @@ namespace WindowsFormsApplication1
         }
 
         /**** Выделение краев оператором Собеля ****/
-        public Bitmap Sobel(Bitmap src)
+        public static Bitmap Sobel(Bitmap src)
         {
             Bitmap dst = new Bitmap(src.Width, src.Height);
             //оператор Собеля
@@ -44,18 +45,18 @@ namespace WindowsFormsApplication1
             //Преобразование в полутоновое изображение
             GrayScale(src);
 
-            int sumX, sumY, sum ;
+            int sumX, sumY, sum;
             //'цикл прохода по всему изображению
             for (int y = 0; y < src.Height - 1; y++)
-                for(int x = 0 ; x < src.Width - 1; x++)
+                for (int x = 0; x < src.Width - 1; x++)
                 {
                     sumX = sumY = 0;
-                    if ( y == 0 || y == src.Height - 1 ) sum = 0;
+                    if (y == 0 || y == src.Height - 1) sum = 0;
                     else if (x == 0 || x == src.Width - 1) sum = 0;
                     else
                     {
                         //цикл свертки оператором Собеля
-                        for ( int i = -1; i < 2; i++ )
+                        for (int i = -1; i < 2; i++)
                             for (int j = -1; j < 2; j++)
                             {
                                 //взять значение пикселя
@@ -70,8 +71,8 @@ namespace WindowsFormsApplication1
                         sum = (int)Math.Sqrt(Math.Pow(sumX, 2) + Math.Pow(sumY, 2));
                     }
                     //провести нормализацию
-                    if ( sum > 255) sum = 255;
-                    else if ( sum < 0 ) sum = 0;
+                    if (sum > 255) sum = 255;
+                    else if (sum < 0) sum = 0;
                     //записать результат в выходное изображение
                     dst.SetPixel(x, y, Color.FromArgb(255, sum, sum, sum));
                 }
@@ -80,8 +81,8 @@ namespace WindowsFormsApplication1
         }
 
         /**** Алгоритмы поиска локальных максимумов ****/
-        
-        public Point SearchLine(Point Size, int tr )
+
+        public static Point SearchLine(Point Size, int tr)
         {
 
             int sum = 0, max = 0;
@@ -103,14 +104,14 @@ namespace WindowsFormsApplication1
             return pt;
         }
 
-        public Point SearchCircle(Point Size, int tr )
+        public static Point SearchCircle(Point Size, int tr)
         {
 
             int sum = 0, max = 0;
             Point pt = new Point(0, 0);
 
-            for (int y = 1; y < Size.Y-1; y++)
-                for (int x = 1; x < Size.X-1; x++)
+            for (int y = 1; y < Size.Y - 1; y++)
+                for (int x = 1; x < Size.X - 1; x++)
                 {
                     sum = 0;
                     for (int i = -1; i <= 1; i++)
@@ -133,29 +134,29 @@ namespace WindowsFormsApplication1
 
             return pt;
         }
-      
+
         /**** Максимум в аккумуляторе ****/
-        public int AccumMax(Point Size)
+        public static int AccumMax(Point Size)
         {
             int amax = 0;
             for (int y = 0; y < Size.Y; y++)
                 for (int x = 0; x < Size.X; x++)
-                    if (Accum[ y, x ] > amax) amax = Accum[ y, x];
+                    if (Accum[y, x] > amax) amax = Accum[y, x];
             return amax;
         }
 
         /**** Нормализация в аккумуляторе ****/
-        public void Normalize(Point Size, int amax)
+        public static void Normalize(Point Size, int amax)
         {
             for (int y = 0; y < Size.Y; y++)
                 for (int x = 0; x < Size.X; x++)
                 {
                     int c = (int)(((double)Accum[y, x] / (double)amax) * 255.0);
-                    Accum[y, x] = c; 
+                    Accum[y, x] = c;
                 }
         }
 
-        public Bitmap TransformLine(Bitmap img, int tr)
+        public static Bitmap TransformLine(Bitmap img, int tr)
         {
             Point Size = new Point();
             int mang = 180;
@@ -194,9 +195,9 @@ namespace WindowsFormsApplication1
             return img;
         }
 
-        public Bitmap TransformCircle(Bitmap img, int tr, int r)
+        public static Bitmap TransformCircle(Bitmap img, int r)
         {
-            Point Size = new Point(img.Width,img.Height);
+            Point Size = new Point(img.Width, img.Height);
             int mang = 360;
 
             Accum = new int[Size.Y, Size.X];
@@ -216,19 +217,20 @@ namespace WindowsFormsApplication1
             // Поиск максимума
             int amax = AccumMax(Size);
             // Нормализация 
+            Bitmap img1 = new Bitmap(img.Width, img.Height);
             if (amax != 0)
             {
-                img = new Bitmap(Size.X, Size.Y);
+                img1 = new Bitmap(Size.X, Size.Y);
                 // Нормализация в аккумулятор
                 Normalize(Size, amax);
                 for (int y = 0; y < Size.Y; y++)
                     for (int x = 0; x < Size.X; x++)
                     {
                         int c = Accum[y, x];
-                        img.SetPixel(x, y, Color.FromArgb(c, c, c));
+                        img1.SetPixel(x, y, Color.FromArgb(c, c, c));
                     }
             }
-            return img;
+            return img1;
         }
     }
 }
