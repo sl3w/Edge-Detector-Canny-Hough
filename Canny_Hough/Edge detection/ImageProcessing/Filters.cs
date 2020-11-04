@@ -68,5 +68,29 @@ namespace Edge_detection
                 }
             return gauss;
         }
+
+        public static Bitmap MedianFilter(Bitmap src, int sizeFilter)
+        {
+            int offset = (int) Math.Ceiling((double)sizeFilter / 2);
+
+            Bitmap dst = new Bitmap(src);
+            for (int i = offset; i < src.Width - offset; i++)
+            {
+                for (int j = offset; j < src.Height - offset; j++)
+                {
+                    int[] mas = new int[sizeFilter * sizeFilter];
+
+                    for (int k = -offset; k <= offset; k++)
+                        for (int l = -offset; l <= offset; l++)
+                            mas[k + offset + l + offset] = src.GetPixel(i + k, j + l).B;
+
+                    Array.Sort(mas);
+                    int middle = (int)Math.Ceiling((double)sizeFilter * sizeFilter / 2) - 1;
+                    dst.SetPixel(i, j, Color.FromArgb(mas[middle], mas[middle], mas[middle]));
+                }
+            }
+
+            return dst;
+        }
     }
 }

@@ -39,9 +39,32 @@ namespace Edge_detection
             groupBox2.Enabled = checkBox3.Checked;
         }
 
+        private void button1_ClickTest(object sender, EventArgs e)
+        {
+            Bitmap afterGrey;
+
+            var bmp = new Bitmap(uploadedImage);
+            panel1.Invoke(new Action(() => AddImageOnPanel(new Bitmap(bmp), "Исходное изображение")));
+
+            afterGrey = ImageProcessing.ImageToGrey(bmp);
+            panel1.Invoke(new Action(() => AddImageOnPanel(new Bitmap(afterGrey), "Оттенки серого")));
+
+            double sigma = 0;
+            Bitmap afterGauss = Filters.GaussianFilter(afterGrey, sigma);
+            panel1.Invoke(new Action(() => AddImageOnPanel(new Bitmap(afterGauss), "Фильтр Гаусса")));
+
+
+            Bitmap afterMedian = Filters.MedianFilter(afterGrey, 5);
+            panel1.Invoke(new Action(() => AddImageOnPanel(new Bitmap(afterMedian), "Медианный фильтр")));
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
+            if (thread != null && thread.IsAlive)
+                thread.Abort();
             panel1.Controls.Clear();
+            panel1.AutoScroll = false;
+            panel1.AutoScroll = true;
             pbLocX = 30;
             thread = new Thread(StartProcessing);
             thread.Start();
@@ -78,6 +101,9 @@ namespace Edge_detection
                 int method = comboBox1.SelectedIndex;
                 switch (method)
                 {
+                    case 0:
+                        FadeLaplacianDetecting();
+                        break;
                     case 4:
                         CannyEdgeDetecting();
                         break;
@@ -191,6 +217,43 @@ namespace Edge_detection
 
             var afterMarrHildreth = LoG.MarrHildrethEdge(new Bitmap(afterGauss));
             panel1.Invoke(new Action(() => AddImageOnPanel(new Bitmap(afterMarrHildreth), "Метод Марр-Хилдрет")));
+
+            Bitmap afterThreshold = ImageProcessing.FadeLaplassThreshold(afterMarrHildreth, trackBar2.Value);
+            panel1.Invoke(new Action(() => AddImageOnPanel(new Bitmap(afterThreshold), "Пороговая фильтрация")));
+        }
+
+        public void FadeLaplacianDetecting()
+        {
+            Bitmap afterGrey;
+
+            var bmp = new Bitmap(uploadedImage);
+            panel1.Invoke(new Action(() => AddImageOnPanel(new Bitmap(bmp), "Исходное изображение")));
+
+            afterGrey = ImageProcessing.ImageToGrey(bmp);
+            panel1.Invoke(new Action(() => AddImageOnPanel(new Bitmap(afterGrey), "Оттенки серого")));
+
+            Bitmap afterGauss;
+            if (checkBox2.Checked)
+            {
+                double sigma = 0;
+                if (radioButton6.Checked)
+                    sigma = (double)numericUpDown4.Value;
+                afterGauss = Filters.GaussianFilter(afterGrey, sigma);
+                panel1.Invoke(new Action(() => AddImageOnPanel(new Bitmap(afterGauss), "Фильтр Гаусса")));
+            }
+            else
+                afterGauss = afterGrey;
+
+            var afterFade = Edges.FadeDetection(new Bitmap(afterGauss));
+            panel1.Invoke(new Action(() => AddImageOnPanel(new Bitmap(afterFade), "Метод на основе градиента")));
+
+            Bitmap afterThreshold = ImageProcessing.FadeLaplassThreshold(afterFade, trackBar2.Value);
+            panel1.Invoke(new Action(() => AddImageOnPanel(new Bitmap(afterThreshold), "Пороговая фильтрация")));
+        }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

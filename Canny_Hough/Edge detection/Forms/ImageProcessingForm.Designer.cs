@@ -55,6 +55,7 @@
             this.trackBar4 = new System.Windows.Forms.TrackBar();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.button2 = new System.Windows.Forms.Button();
+            this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox10)).BeginInit();
@@ -123,6 +124,7 @@
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.checkBox2);
+            this.groupBox1.Controls.Add(this.radioButton1);
             this.groupBox1.Controls.Add(this.radioButton5);
             this.groupBox1.Location = new System.Drawing.Point(208, 31);
             this.groupBox1.Name = "groupBox1";
@@ -142,11 +144,12 @@
             this.checkBox2.TabIndex = 1;
             this.checkBox2.Text = "Включить фильтрацию";
             this.checkBox2.UseVisualStyleBackColor = true;
+            this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
             // 
             // radioButton5
             // 
             this.radioButton5.AutoSize = true;
-            this.radioButton5.Location = new System.Drawing.Point(6, 69);
+            this.radioButton5.Location = new System.Drawing.Point(6, 59);
             this.radioButton5.Name = "radioButton5";
             this.radioButton5.Size = new System.Drawing.Size(129, 21);
             this.radioButton5.TabIndex = 0;
@@ -391,7 +394,7 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(474, 395);
+            this.pictureBox1.Location = new System.Drawing.Point(471, 433);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(1058, 538);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -407,7 +410,18 @@
             this.button2.TabIndex = 106;
             this.button2.Text = "Обработать";
             this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button1_Click);
+            this.button2.Click += new System.EventHandler(this.button1_ClickTest);
+            // 
+            // radioButton1
+            // 
+            this.radioButton1.AutoSize = true;
+            this.radioButton1.Location = new System.Drawing.Point(6, 89);
+            this.radioButton1.Name = "radioButton1";
+            this.radioButton1.Size = new System.Drawing.Size(159, 21);
+            this.radioButton1.TabIndex = 0;
+            this.radioButton1.TabStop = true;
+            this.radioButton1.Text = "Медианный фильтр";
+            this.radioButton1.UseVisualStyleBackColor = true;
             // 
             // ImageProcessingForm
             // 
@@ -484,5 +498,6 @@
         private System.Windows.Forms.TrackBar trackBar4;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.RadioButton radioButton1;
     }
 }
