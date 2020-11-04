@@ -85,13 +85,13 @@ namespace Edge_detection
         public static Point SearchLine(Point Size, int tr)
         {
 
-            int sum = 0, max = 0;
+            int /*sum = 0,*/ max = 0;
             Point pt = new Point(0, 0);
 
             for (int y = 0; y < Size.Y; y++)
                 for (int x = 0; x < Size.X; x++)
                 {
-                    sum = 0;
+                    //sum = 0;
                     if (max < Accum[y, x])
                     {
                         max = Accum[y, x]; pt.X = x; pt.Y = y;

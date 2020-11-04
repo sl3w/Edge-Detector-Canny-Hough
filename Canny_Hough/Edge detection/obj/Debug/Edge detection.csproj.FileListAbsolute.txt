@@ -38,3 +38,5 @@ C:\Users\lenya\Desktop\Canny-Hough\Canny_Hough\Edge detection\obj\Debug\Edge det
 C:\Users\lenya\Desktop\Canny-Hough\Canny_Hough\Edge detection\obj\Debug\Edge detection.exe
 C:\Users\lenya\Desktop\Canny-Hough\Canny_Hough\Edge detection\obj\Debug\Edge detection.pdb
 C:\Users\lenya\Desktop\Canny-Hough\Canny_Hough\Edge detection\obj\Debug\Edge_detection.HoughForm.resources
+C:\Users\lenya\Desktop\Canny-Hough\Canny_Hough\Edge detection\obj\Debug\Edge_detection.Form1.resources
+C:\Users\lenya\Desktop\Canny-Hough\Canny_Hough\Edge detection\obj\Debug\Edge_detection.ImageProcessingForm.resources

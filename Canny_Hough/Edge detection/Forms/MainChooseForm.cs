@@ -81,24 +81,25 @@ namespace Edge_detection
 
         private void StartEdgeDetection()
         {
-            if (uploadedImage != null)
-            {
-                Form form;
-                if (radioButton1.Checked)
-                {
-                    form = new FadeLaplasDetection(uploadedImage, true);
-                }
-                else
-                    if (radioButton2.Checked)
-                {
-                    form = new FadeLaplasDetection(uploadedImage, false);
-                }
-                else
-                {
-                    form = new CannyDetection(uploadedImage);
-                }
-                form.Show();
-            }
+            //if (uploadedImage != null)
+            //{
+            //    Form form;
+            //    if (radioButton1.Checked)
+            //    {
+            //        form = new FadeLaplasDetection(uploadedImage, true);
+            //    }
+            //    else
+            //        if (radioButton2.Checked)
+            //    {
+            //        form = new FadeLaplasDetection(uploadedImage, false);
+            //    }
+            //    else
+            //    {
+            //        form = new CannyDetection(uploadedImage);
+            //    }
+            //    form.Show();
+            //}
+            new ImageProcessingForm(uploadedImage).Show();
         }
 
         private void MainChooseForm_DragEnter(object sender, DragEventArgs e)

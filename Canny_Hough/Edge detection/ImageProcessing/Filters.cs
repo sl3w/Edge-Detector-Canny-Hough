@@ -30,7 +30,6 @@ namespace Edge_detection
                         for (int l = -2; l < 3; l++)
                             mas[k + 2, l + 2] = bmp.GetPixel(i + k, j + l).B;
 
-
                     int brightness = (int)MultGauss(mas, sigma);
                     resbmp.SetPixel(i, j, Color.FromArgb(brightness, brightness, brightness));
                 }
@@ -47,10 +46,12 @@ namespace Edge_detection
             else
                 gauss = GetGaussMatrBySigma(sigma);
             for (int i = 0; i < matr.GetLength(0); i++)
+            {
                 for (int j = 0; j < matr.GetLength(0); j++)
                 {
                     br += (matr[i, j] * (gauss[i, j]));
                 }
+            }
             if (sigma == 0)
                 br = br / 159;
             return br;

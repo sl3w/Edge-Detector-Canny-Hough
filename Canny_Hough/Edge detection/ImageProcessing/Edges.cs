@@ -24,10 +24,13 @@ namespace Edge_detection
                                  { -2, 0, 2 },
                                  { -1, 0, 1 } };
 
+        private static int[,] newSobelX = { { -1, 0, 1 }, { -2, 0, 2 }, { -1, 0, 1 } };
+        private static int[,] newSobelY = { { 1, 2, 1 }, { 0, 0, 0 }, { -1, -2, -1 } };
+
         //фильтр Собеля
         public static Bitmap SobelConvolve(Bitmap bmp)
         {
-            Bitmap resbmp = new Bitmap(bmp.Width, bmp.Height);
+            Bitmap resbmp = new Bitmap(bmp);
             angles = new double[bmp.Width, bmp.Height];
             for (int i = 1; i < bmp.Width - 1; i++)
             {
@@ -42,8 +45,9 @@ namespace Edge_detection
                     int ggx = SobelMult(mas, SobelX);
                     int ggy = SobelMult(mas, SobelY);
 
-                    byte brightness = (byte)Math.Sqrt(Math.Pow(ggx, 2) + Math.Pow(ggy, 2));
-
+                    int brightness = (int)Math.Sqrt(Math.Pow(ggx, 2) + Math.Pow(ggy, 2));
+                    if (brightness > 255) brightness = 255;
+                    else if (brightness < 0) brightness = 0;
                     resbmp.SetPixel(i, j, Color.FromArgb(brightness, brightness, brightness));
 
                     double a = Math.Atan2(ggy, ggx) * 180 / Math.PI;
@@ -53,14 +57,21 @@ namespace Edge_detection
             return resbmp;
         }
 
+        private static int SobelMult(int[,] matr, int[,] g)
+        {
+            int br = 0;
+            for (int i = 0; i < g.GetLength(0); i++)
+                for (int j = 0; j < g.GetLength(0); j++)
+                    br += (matr[i, j] * g[i, j]);
+            return br;
+        }
+
         public static Bitmap Sobel(Bitmap src)
         {
             Bitmap dst = new Bitmap(src.Width, src.Height);
             angles = new double[src.Width, src.Height];
 
             //оператор Собеля
-            int[,] dx = { { -1, 0, 1 }, { -2, 0, 2 }, { -1, 0, 1 } };
-            int[,] dy = { { 1, 2, 1 }, { 0, 0, 0 }, { -1, -2, -1 } };
 
             int sumX, sumY, sum;
             //'цикл прохода по всему изображению
@@ -79,9 +90,9 @@ namespace Edge_detection
                                 //взять значение пикселя
                                 int c = src.GetPixel(x + i, y + j).R;
                                 //найти сумму произведений пикселя на значение из матрицы по X
-                                sumX += c * dx[i + 1, j + 1];
+                                sumX += c * newSobelX[i + 1, j + 1];
                                 //и сумму произведений пикселя на значение из матрицы по Y
-                                sumY += c * dy[i + 1, j + 1];
+                                sumY += c * newSobelY[i + 1, j + 1];
                             }
                         //найти приближенное значение величины градиента
                         //sum = Math.Abs(sumX) + Math.Abs(sumY);
@@ -97,15 +108,6 @@ namespace Edge_detection
                 }
             //Binarization(dst);
             return dst;
-        }
-
-        private static int SobelMult(int[,] matr, int[,] g)
-        {
-            int br = 0;
-            for (int i = 0; i < g.GetLength(0); i++)
-                for (int j = 0; j < g.GetLength(0); j++)
-                    br += (matr[i, j] * g[i, j]);
-            return br;
         }
 
         private static double GetAngleMult45(double angle)

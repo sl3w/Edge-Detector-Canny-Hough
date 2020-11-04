@@ -45,21 +45,34 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\About.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\About.Designer.cs">
       <DependentUpon>About.cs</DependentUpon>
     </Compile>
-    <Compile Include="HoughForm.cs">
+    <Compile Include="Forms\HoughForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="HoughForm.Designer.cs">
+    <Compile Include="Forms\HoughForm.Designer.cs">
       <DependentUpon>HoughForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ImageProcessingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ImageProcessingForm.Designer.cs">
+      <DependentUpon>ImageProcessingForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ImageProcessing\Edges.cs" />
     <Compile Include="ImageProcessing\Filters.cs" />
     <Compile Include="ImageProcessing\Hough.cs" />
+    <Compile Include="ImageProcessing\LoG.cs" />
     <Compile Include="LoadAndSaveImage.cs" />
     <Compile Include="Forms\MainChooseForm.cs">
       <SubType>Form</SubType>
@@ -82,6 +95,9 @@
     <Compile Include="Forms\CannyDetection.Designer.cs">
       <DependentUpon>CannyDetection.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\About.resx">
       <DependentUpon>About.cs</DependentUpon>
     </EmbeddedResource>
@@ -91,8 +107,11 @@
     <EmbeddedResource Include="Forms\FadeLaplasDetection.resx">
       <DependentUpon>FadeLaplasDetection.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="HoughForm.resx">
+    <EmbeddedResource Include="Forms\HoughForm.resx">
       <DependentUpon>HoughForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ImageProcessingForm.resx">
+      <DependentUpon>ImageProcessingForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
