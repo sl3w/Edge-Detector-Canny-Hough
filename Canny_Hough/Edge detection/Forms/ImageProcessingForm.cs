@@ -23,7 +23,9 @@ namespace Edge_detection
         private int labLocY = 170;
         
         private bool gaussChanged = true;
+        private bool sobelChanged = true;
         private Bitmap gaussed;
+        private Bitmap sobeled;
         private Bitmap grayscaled;
 
         public ImageProcessingForm(Image img)
@@ -115,6 +117,7 @@ namespace Edge_detection
         public void StartProcessing()
         {
             button2.Enabled = false;
+            pictureBox1.Image = null;
             try
             {
                 int method = comboBox1.SelectedIndex;
@@ -138,6 +141,8 @@ namespace Edge_detection
                 }
 
                 button2.Enabled = true;
+                var lastPb = (PictureBox) panel1.Controls[panel1.Controls.Count - 2];
+                pictureBox1.Image = lastPb.Image;
                 thread.Abort();
             }
             catch
@@ -194,8 +199,8 @@ namespace Edge_detection
             if (checkBox4.Checked)
             {
                 var afterThreshold = checkBox3.Checked
-                    ? ImageProcessing.FadeLaplassThreshold(afterSobel, trackBar2.Value)
-                    : ImageProcessing.FadeLaplassThresholdColor(afterSobel, trackBar2.Value);
+                    ? ImageProcessing.FadeLaplassThreshold(afterSobel, trackBar5.Value)
+                    : ImageProcessing.FadeLaplassThresholdColor(afterSobel, trackBar5.Value);
                 panel1.Invoke(new Action(() => AddImageOnPanel(new Bitmap(afterThreshold), "Пороговая фильтрация")));
             }
         }
@@ -210,20 +215,18 @@ namespace Edge_detection
             Bitmap afterGrey;
             if (checkBox3.Checked)
             {
-                afterGrey = ImageProcessing.ImageToGrey(bmp);
+                if (grayscaled == null)
+                {
+                    afterGrey = ImageProcessing.ImageToGrey(bmp);
+                    grayscaled = afterGrey;
+                }
+                else
+                    afterGrey = grayscaled;
                 panel1.Invoke(new Action(() => AddImageOnPanel(new Bitmap(afterGrey), "Оттенки серого")));
             }
             else
                 afterGrey = bmp;
-
-            //pictureBox9.Invoke(new Action(() => pictureBox9.Image = new Bitmap(afterGrey)));
-            //isFirstStart = false;
-            //}
-            //else
-            // afterGrey = new Bitmap(pictureBox2.Image);
-
-            //ShowSelectedImage();
-
+            
             Bitmap afterGauss;
             if (checkBox2.Checked)
             {
@@ -243,38 +246,35 @@ namespace Edge_detection
             else
                 afterGauss = afterGrey;
 
-            //ShowSelectedImage();
-
+            
             if (checkBox3.Checked)
             {
-                Bitmap afterSobel = Edges.SobelConvolve(afterGauss);
-                //Bitmap afterSobel2 = Edges.Sobel(afterGauss);
+                Bitmap afterSobel;
+                if (sobelChanged)
+                {
+                    afterSobel = Edges.SobelConvolve(afterGauss);
+                    sobeled = afterSobel;
+                    sobelChanged = false;
+                }
+                else
+                    afterSobel = sobeled;
+
                 panel1.Invoke(new Action(() => AddImageOnPanel(new Bitmap(afterSobel), "Фильтр Собеля")));
-                //pictureBox14.Invoke(new Action(() => pictureBox14.Image = new Bitmap(afterSobel2)));
 
                 Bitmap afterSuppression = Edges.NonMaximumSuppression(afterSobel);
-                //Bitmap afterSuppression2 = Edges.NonMaximumSuppression(afterSobel2);
                 panel1.Invoke(
                     new Action(() => AddImageOnPanel(new Bitmap(afterSuppression), "Подавление не-максимумов")));
-                //pictureBox15.Invoke(new Action(() => pictureBox15.Image = new Bitmap(afterSuppression2)));
-
-
+                
                 Bitmap afterThreshold = Edges.DoubleThreshold(afterSuppression, trackBar3.Value, trackBar2.Value);
-                //Bitmap afterThreshold2 = Edges.DoubleThreshold(afterSuppression2, trackBar3.Value, trackBar2.Value);
                 panel1.Invoke(new Action(() =>
                     AddImageOnPanel(new Bitmap(afterThreshold), "Двойная проговая фильтрация")));
-                //pictureBox16.Invoke(new Action(() => pictureBox16.Image = new Bitmap(afterThreshold2)));
 
                 Bitmap afterEdgeTrack = Edges.EdgeTracking(afterThreshold);
-                //Bitmap afterEdgeTrack2 = Edges.EdgeTracking(afterThreshold2);
                 panel1.Invoke(new Action(() =>
                     AddImageOnPanel(new Bitmap(afterEdgeTrack), "Трассировка области неоднозначности")));
-                //pictureBox17.Invoke(new Action(() => pictureBox17.Image = new Bitmap(afterEdgeTrack2)));
 
                 //Bitmap afterRestoration = Edges.BorderRestoration(afterEdgeTrack, trackBar4.Value);
                 //panel1.Invoke(new Action(() => AddImageOnPanel(new Bitmap(afterRestoration), "Восстановление границ")));
-
-                //button1.Enabled = button6.Enabled = groupBox1.Enabled = true;
             }
         }
 
@@ -303,7 +303,7 @@ namespace Edge_detection
             var afterMarrHildreth = LoG.MarrHildrethEdge(new Bitmap(afterGauss));
             panel1.Invoke(new Action(() => AddImageOnPanel(new Bitmap(afterMarrHildreth), "Метод Марр-Хилдрет")));
 
-            Bitmap afterThreshold = ImageProcessing.FadeLaplassThreshold(afterMarrHildreth, trackBar2.Value);
+            Bitmap afterThreshold = ImageProcessing.FadeLaplassThreshold(afterMarrHildreth, trackBar5.Value);
             panel1.Invoke(new Action(() => AddImageOnPanel(new Bitmap(afterThreshold), "Пороговая фильтрация")));
         }
 
@@ -351,8 +351,8 @@ namespace Edge_detection
                 if (checkBox4.Checked)
                 {
                     var afterThreshold = checkBox3.Checked
-                        ? ImageProcessing.FadeLaplassThreshold(afterFade, trackBar2.Value)
-                        : ImageProcessing.FadeLaplassThresholdColor(afterFade, trackBar2.Value);
+                        ? ImageProcessing.FadeLaplassThreshold(afterFade, trackBar5.Value)
+                        : ImageProcessing.FadeLaplassThresholdColor(afterFade, trackBar5.Value);
                     panel1.Invoke(new Action(() =>
                         AddImageOnPanel(new Bitmap(afterThreshold), "Пороговая фильтрация")));
                 }
@@ -491,6 +491,30 @@ namespace Edge_detection
         private void radioButton6_CheckedChanged(object sender, EventArgs e)
         {
             gaussChanged = true;
+            sobelChanged = true;
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            LoadAndSaveImage.SaveImage(pictureBox1.Image);
+        }
+
+        private void pictureBox11_Click(object sender, EventArgs e)
+        {
+            pictureBox1.Width = (int)(pictureBox1.Width * 1.1);
+            pictureBox1.Height = (int)(pictureBox1.Height * 1.1);
+        }
+
+        private void pictureBox12_Click(object sender, EventArgs e)
+        {
+            pictureBox1.Width = (int)(pictureBox1.Width * 0.9);
+            pictureBox1.Height = (int)(pictureBox1.Height * 0.9);
+        }
+
+        private void pictureBox13_Click(object sender, EventArgs e)
+        {
+            pictureBox1.Width = panel2.Width;
+            pictureBox1.Height = panel2.Height;
         }
     }
 }
