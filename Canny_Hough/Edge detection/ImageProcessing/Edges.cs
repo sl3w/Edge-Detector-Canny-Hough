@@ -56,6 +56,56 @@ namespace Edge_detection
             }
             return resbmp;
         }
+        
+        public static Bitmap SobelConvolveColor(Bitmap bmp)
+        {
+            Bitmap resbmp = new Bitmap(bmp);
+            angles = new double[bmp.Width, bmp.Height];
+            for (int i = 1; i < bmp.Width - 1; i++)
+            {
+                for (int j = 1; j < bmp.Height - 1; j++)
+                {
+                    int[,] masR = new int[3, 3];
+                    int[,] masG = new int[3, 3];
+                    int[,] masB = new int[3, 3];
+
+                    for (int k = -1; k < 2; k++)
+                    for (int l = -1; l < 2; l++)
+                    {
+                        masR[k + 1, l + 1] = bmp.GetPixel(i + k, j + l).R;
+                        masG[k + 1, l + 1] = bmp.GetPixel(i + k, j + l).G;
+                        masB[k + 1, l + 1] = bmp.GetPixel(i + k, j + l).B;
+                    }
+
+                    int ggxR = SobelMult(masR, SobelX);
+                    int ggyR = SobelMult(masR, SobelY);
+                    
+                    int red = (int)Math.Sqrt(Math.Pow(ggxR, 2) + Math.Pow(ggyR, 2));
+                    if (red > 255) red = 255;
+                    else if (red < 0) red = 0;
+                    
+                    int ggxG = SobelMult(masG, SobelX);
+                    int ggyG = SobelMult(masG, SobelY);
+                    
+                    int green = (int)Math.Sqrt(Math.Pow(ggxG, 2) + Math.Pow(ggyG, 2));
+                    if (green > 255) green = 255;
+                    else if (green < 0) green = 0;
+                    
+                    int ggxB = SobelMult(masB, SobelX);
+                    int ggyB = SobelMult(masB, SobelY);
+
+                    int blue = (int)Math.Sqrt(Math.Pow(ggxB, 2) + Math.Pow(ggyB, 2));
+                    if (blue > 255) blue = 255;
+                    else if (blue < 0) blue = 0;
+                    
+                    resbmp.SetPixel(i, j, Color.FromArgb(red, green, blue));
+
+                    //double a = Math.Atan2(ggy, ggx) * 180 / Math.PI;
+                    //angles[i, j] = GetAngleMult45(a);
+                }
+            }
+            return resbmp;
+        }
 
         private static int SobelMult(int[,] matr, int[,] g)
         {
@@ -334,6 +384,69 @@ namespace Edge_detection
             }
             return resbmp;
         }
+        
+        public static Bitmap FadeDetectionColor(Bitmap bmp)
+        {
+            Bitmap resbmp = new Bitmap(bmp);
+
+            //angles = new double[bmp.Width, bmp.Height];
+
+            //byte brightness = (byte)Math.Sqrt(Math.Pow((bmp.GetPixel(0, 0).G - bmp.GetPixel(1, 0).G), 2) + Math.Pow((bmp.GetPixel(0, 0).G - bmp.GetPixel(0, 1).G), 2));
+            //resbmp.SetPixel(0, 0, Color.FromArgb(brightness, brightness, brightness));
+
+            //byte brightness;
+            for (int i = 1; i < bmp.Width; i++)
+            {
+                for (int j = 1; j < bmp.Height; j++)
+                {
+
+                    int gxR = (bmp.GetPixel(i, j).R - bmp.GetPixel(i - 1, j).R);
+                    int gyR = (bmp.GetPixel(i, j).R - bmp.GetPixel(i, j - 1).R);
+                    int red = (int) Math.Sqrt(Math.Pow(gxR, 2) + Math.Pow(gyR, 2));
+                    if (red > 255) red = 255;
+                    else if (red < 0) red = 0;
+                    
+                    int gxG = (bmp.GetPixel(i, j).G - bmp.GetPixel(i - 1, j).G);
+                    int gyG = (bmp.GetPixel(i, j).G - bmp.GetPixel(i, j - 1).G);
+                    int green = (int) Math.Sqrt(Math.Pow(gxG, 2) + Math.Pow(gyG, 2));
+                    if (green > 255) green = 255;
+                    else if (green < 0) green = 0;
+                    
+                    int gxB= (bmp.GetPixel(i, j).B - bmp.GetPixel(i - 1, j).B);
+                    int gyB = (bmp.GetPixel(i, j).B - bmp.GetPixel(i, j - 1).B);
+                    int blue = (int) Math.Sqrt(Math.Pow(gxB, 2) + Math.Pow(gyB, 2));
+                    if (blue > 255) blue = 255;
+                    else if (blue < 0) blue = 0;
+                    
+                    resbmp.SetPixel(i, j, Color.FromArgb(red, green, blue));
+
+                    //double a = Math.Atan((double)gy / gx) * 180 / Math.PI;
+                    //angles[i, j] = GetAngleMult45(a);
+                }
+            }
+
+            //Крайние точки
+            //нижняя и верхняя часть
+            // for (int i = 1; i < bmp.Width - 1; i++)
+            // {
+            //     brightness = (byte)Math.Sqrt(Math.Pow((bmp.GetPixel(i, bmp.Height - 1).G - bmp.GetPixel(i - 1, bmp.Height - 1).G), 2));
+            //     resbmp.SetPixel(i, bmp.Height - 1, Color.FromArgb(brightness, brightness, brightness));
+            //
+            //     brightness = (byte)Math.Sqrt(Math.Pow((bmp.GetPixel(i, 0).G - bmp.GetPixel(i - 1, 0).G), 2) + Math.Pow((bmp.GetPixel(i, 0).G - bmp.GetPixel(i, 1).G), 2));
+            //     resbmp.SetPixel(i, 0, Color.FromArgb(brightness, brightness, brightness));
+            // }
+            //
+            // //правая и левая часть
+            // for (int i = 1; i < bmp.Height - 1; i++)
+            // {
+            //     brightness = (byte)Math.Sqrt(Math.Pow((bmp.GetPixel(bmp.Width - 1, i).G - bmp.GetPixel(bmp.Width - 1, i - 1).G), 2) + Math.Pow((bmp.GetPixel(bmp.Width - 2, i).G - bmp.GetPixel(bmp.Width - 2, i - 1).G), 2));
+            //     resbmp.SetPixel(bmp.Width - 1, i, Color.FromArgb(brightness, brightness, brightness));
+            //
+            //     brightness = (byte)Math.Sqrt(Math.Pow((bmp.GetPixel(0, i).G - bmp.GetPixel(0, i - 1).G), 2) + Math.Pow((bmp.GetPixel(0, i).G - bmp.GetPixel(1, i).G), 2));
+            //     resbmp.SetPixel(0, i, Color.FromArgb(brightness, brightness, brightness));
+            // }
+            return resbmp;
+        }
 
         //метод на основе лапласиана
         public static Bitmap LaplacianDetection(Bitmap bmp)
@@ -394,6 +507,81 @@ namespace Edge_detection
                 brightness = (byte)(Math.Abs(gx + gy));
                 resbmp.SetPixel(i, j, Color.FromArgb(brightness, brightness, brightness));
             }
+            return resbmp;
+        }
+        
+        public static Bitmap LaplacianDetectionColor(Bitmap bmp)
+        {
+            Bitmap resbmp = new Bitmap(bmp);
+
+            //byte brightness = (byte)Math.Sqrt(Math.Pow((bmp.GetPixel(0, 0).G - bmp.GetPixel(1, 0).G), 2) + Math.Pow((bmp.GetPixel(0, 0).G - bmp.GetPixel(0, 1).G), 2));
+            //resbmp.SetPixel(0, 0, Color.FromArgb(brightness, brightness, brightness));
+
+            //byte brightness;
+            for (int i = 1; i < bmp.Width - 1; i++)
+            {
+                for (int j = 1; j < bmp.Height - 1; j++)
+                {
+
+                    int gxR = bmp.GetPixel(i + 1, j).R - 2 * bmp.GetPixel(i, j).R + bmp.GetPixel(i - 1, j).R;
+                    int gyR = bmp.GetPixel(i, j + 1).R - 2 * bmp.GetPixel(i, j).R + bmp.GetPixel(i, j - 1).R;
+                    int red = Math.Abs(gxR + gyR);
+                    
+                    if (red > 255) red = 255;
+
+                    int gxG = bmp.GetPixel(i + 1, j).G - 2 * bmp.GetPixel(i, j).G + bmp.GetPixel(i - 1, j).G;
+                    int gyG = bmp.GetPixel(i, j + 1).G - 2 * bmp.GetPixel(i, j).G + bmp.GetPixel(i, j - 1).G;
+                    int green = Math.Abs(gxG + gyG);
+                    
+                    if (green > 255) green = 255;
+
+                    int gxB = bmp.GetPixel(i + 1, j).B - 2 * bmp.GetPixel(i, j).B + bmp.GetPixel(i - 1, j).B;
+                    int gyB = bmp.GetPixel(i, j + 1).B - 2 * bmp.GetPixel(i, j).B + bmp.GetPixel(i, j - 1).B;
+                    int blue = Math.Abs(gxB + gyB);
+                    
+                    if (blue > 255) blue = 255;
+
+                    resbmp.SetPixel(i, j, Color.FromArgb(red, green, blue));
+                }
+            }
+
+            //Крайние точки
+            //нижняя и верхняя часть
+            // for (int i = 1; i < bmp.Width - 1; i++)
+            // {
+            //     int j = bmp.Height - 1;
+            //     int gx = (bmp.GetPixel(i + 1, j).G - 2 * bmp.GetPixel(i, j).G + bmp.GetPixel(i - 1, j).G);
+            //     int gy = (bmp.GetPixel(i, j).G - 2 * bmp.GetPixel(i, j).G + bmp.GetPixel(i, j - 1).G);
+            //
+            //     brightness = (int)(Math.Abs(gx + gy));
+            //     resbmp.SetPixel(i, j, Color.FromArgb(brightness, brightness, brightness));
+            //
+            //     j = 0;
+            //     gx = (bmp.GetPixel(i + 1, j).G - 2 * bmp.GetPixel(i, j).G + bmp.GetPixel(i - 1, j).G);
+            //     gy = (bmp.GetPixel(i, j).G - 2 * bmp.GetPixel(i, j).G + bmp.GetPixel(i, j).G);
+            //
+            //     brightness = (byte)(Math.Abs(gx + gy));
+            //     resbmp.SetPixel(i, j, Color.FromArgb(brightness, brightness, brightness));
+            // }
+            //
+            // //правая и левая часть
+            // for (int j = 1; j < bmp.Height - 1; j++)
+            // {
+            //     int i = bmp.Width - 1;
+            //     int gx = (bmp.GetPixel(i, j).G - 2 * bmp.GetPixel(i, j).G + bmp.GetPixel(i - 1, j).G);
+            //     int gy = (bmp.GetPixel(i, j + 1).G - 2 * bmp.GetPixel(i, j).G + bmp.GetPixel(i, j - 1).G);
+            //
+            //     brightness = (byte)(Math.Abs(gx + gy));
+            //     resbmp.SetPixel(i, j, Color.FromArgb(brightness, brightness, brightness));
+            //
+            //
+            //     i = 0;
+            //     gx = (bmp.GetPixel(i, j).G - 2 * bmp.GetPixel(i, j).G + bmp.GetPixel(i, j).G);
+            //     gy = (bmp.GetPixel(i, j + 1).G - 2 * bmp.GetPixel(i, j).G + bmp.GetPixel(i, j).G);
+            //
+            //     brightness = (byte)(Math.Abs(gx + gy));
+            //     resbmp.SetPixel(i, j, Color.FromArgb(brightness, brightness, brightness));
+            // }
             return resbmp;
         }
     }

@@ -40,3 +40,19 @@ C:\Users\lenya\Desktop\Canny-Hough\Canny_Hough\Edge detection\obj\Debug\Edge det
 C:\Users\lenya\Desktop\Canny-Hough\Canny_Hough\Edge detection\obj\Debug\Edge_detection.HoughForm.resources
 C:\Users\lenya\Desktop\Canny-Hough\Canny_Hough\Edge detection\obj\Debug\Edge_detection.Form1.resources
 C:\Users\lenya\Desktop\Canny-Hough\Canny_Hough\Edge detection\obj\Debug\Edge_detection.ImageProcessingForm.resources
+C:\Users\volchok\Desktop\Canny-Hough\Canny_Hough\Edge detection\obj\Debug\Edge detection.exe
+C:\Users\volchok\Desktop\Canny-Hough\Canny_Hough\Edge detection\obj\Debug\Edge detection.pdb
+C:\Users\volchok\Desktop\Canny-Hough\Canny_Hough\Edge detection\bin\Debug\Edge detection.exe.config
+C:\Users\volchok\Desktop\Canny-Hough\Canny_Hough\Edge detection\bin\Debug\Edge detection.exe
+C:\Users\volchok\Desktop\Canny-Hough\Canny_Hough\Edge detection\bin\Debug\Edge detection.pdb
+C:\Users\volchok\Desktop\Canny-Hough\Canny_Hough\Edge detection\obj\Debug\Edge detection.csprojAssemblyReference.cache
+C:\Users\volchok\Desktop\Canny-Hough\Canny_Hough\Edge detection\obj\Debug\Edge_detection.Form1.resources
+C:\Users\volchok\Desktop\Canny-Hough\Canny_Hough\Edge detection\obj\Debug\Edge_detection.About.resources
+C:\Users\volchok\Desktop\Canny-Hough\Canny_Hough\Edge detection\obj\Debug\Edge_detection.MainChooseForm.resources
+C:\Users\volchok\Desktop\Canny-Hough\Canny_Hough\Edge detection\obj\Debug\Edge_detection.FadeLaplasDetection.resources
+C:\Users\volchok\Desktop\Canny-Hough\Canny_Hough\Edge detection\obj\Debug\Edge_detection.HoughForm.resources
+C:\Users\volchok\Desktop\Canny-Hough\Canny_Hough\Edge detection\obj\Debug\Edge_detection.ImageProcessingForm.resources
+C:\Users\volchok\Desktop\Canny-Hough\Canny_Hough\Edge detection\obj\Debug\Edge_detection.Properties.Resources.resources
+C:\Users\volchok\Desktop\Canny-Hough\Canny_Hough\Edge detection\obj\Debug\Edge_detection.CannyDetection.resources
+C:\Users\volchok\Desktop\Canny-Hough\Canny_Hough\Edge detection\obj\Debug\Edge detection.csproj.GenerateResource.cache
+C:\Users\volchok\Desktop\Canny-Hough\Canny_Hough\Edge detection\obj\Debug\Edge detection.csproj.CoreCompileInputs.cache

@@ -17,7 +17,12 @@ namespace Edge_detection
                                     { 4, 9, 12, 9, 4 },
                                     { 2, 4, 5, 4, 2 } };
 
-        public static Bitmap GaussianFilter(Bitmap bmp, double sigma)
+        public static Bitmap GaussianFilter(Bitmap bmp, double sigma, bool isColor)
+        {
+            return isColor ? GaussianFilterColor(bmp, sigma) : GaussianFilterGrayscale(bmp, sigma);
+        }
+        
+        public static Bitmap GaussianFilterGrayscale(Bitmap bmp, double sigma)
         {
             Bitmap resbmp = new Bitmap(bmp);
             for (int i = 2; i < bmp.Width - 2; i++)
@@ -32,6 +37,34 @@ namespace Edge_detection
 
                     int brightness = (int)MultGauss(mas, sigma);
                     resbmp.SetPixel(i, j, Color.FromArgb(brightness, brightness, brightness));
+                }
+            }
+            return resbmp;
+        }
+        
+        public static Bitmap GaussianFilterColor(Bitmap bmp, double sigma)
+        {
+            Bitmap resbmp = new Bitmap(bmp);
+            for (int i = 2; i < bmp.Width - 2; i++)
+            {
+                for (int j = 2; j < bmp.Height - 2; j++)
+                {
+                    int[,] masR = new int[5, 5];
+                    int[,] masG = new int[5, 5];
+                    int[,] masB = new int[5, 5];
+
+                    for (int k = -2; k < 3; k++)
+                    for (int l = -2; l < 3; l++)
+                    {
+                        masR[k + 2, l + 2] = bmp.GetPixel(i + k, j + l).R;
+                        masG[k + 2, l + 2] = bmp.GetPixel(i + k, j + l).G;
+                        masB[k + 2, l + 2] = bmp.GetPixel(i + k, j + l).B;
+                    }
+
+                    int r = (int)MultGauss(masR, sigma);
+                    int g = (int)MultGauss(masG, sigma);
+                    int b = (int)MultGauss(masB, sigma);
+                    resbmp.SetPixel(i, j, Color.FromArgb(r, g, b));
                 }
             }
             return resbmp;
@@ -54,6 +87,7 @@ namespace Edge_detection
             }
             if (sigma == 0)
                 br = br / 159;
+            if (br > 255) br = 255;
             return br;
         }
 

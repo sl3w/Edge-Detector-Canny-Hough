@@ -27,6 +27,40 @@ namespace Edge_detection
             return resbmp;
         }
 
+        public static Bitmap ImageToColor(Bitmap bmp)
+        {
+            Bitmap resbmp = new Bitmap(bmp.Width, bmp.Height);
+            byte brightness;
+            for (int i = 0; i < bmp.Width; i++)
+            {
+                for (int j = 0; j < bmp.Height; j++)
+                {
+                    brightness = bmp.GetPixel(i, j).B;
+                    var colorAr = BrootForceColor(brightness);
+                    resbmp.SetPixel(i, j, Color.FromArgb(colorAr[0], colorAr[1], colorAr[2]));
+                }
+            }
+            return resbmp;
+        }
+
+        public static byte[] BrootForceColor(byte brightness)
+        {
+            for (byte i = 0; i <= 255; i++)
+            {
+                for (byte j = 0; j <= 255; j++)
+                {
+                    for (byte k = 0; k <= 255; k++)
+                    {
+                        var brightness1 = (byte)(0.299 * i + 0.587 * j + 0.114 * k);
+                        if (brightness == brightness1)
+                            return new [] {i, j, k};
+                    }
+                }
+            }
+
+            return null;
+        }
+
         
         public static Bitmap FadeLaplassThreshold(Bitmap bmp, int border)
         {
@@ -42,6 +76,25 @@ namespace Edge_detection
                     else
                         brightness = 255;
                     resbmp.SetPixel(i, j, Color.FromArgb(brightness, brightness, brightness));
+                }
+            }
+            return resbmp;
+        }
+        
+        public static Bitmap FadeLaplassThresholdColor(Bitmap bmp, int border)
+        {
+            Bitmap resbmp = new Bitmap(bmp);
+            for (int i = 0; i < bmp.Width - 1; i++)
+            {
+                for (int j = 0; j < bmp.Height - 1; j++)
+                {
+                    byte colorR = bmp.GetPixel(i, j).R;
+                    byte colorG = bmp.GetPixel(i, j).G;
+                    byte colorB = bmp.GetPixel(i, j).B;
+                    colorR = colorR < border ? (byte) 0 : (byte) 255;
+                    colorG = colorG < border ? (byte) 0 : (byte) 255;
+                    colorB = colorB < border ? (byte) 0 : (byte) 255;
+                    resbmp.SetPixel(i, j, Color.FromArgb(colorR, colorG, colorB));
                 }
             }
             return resbmp;

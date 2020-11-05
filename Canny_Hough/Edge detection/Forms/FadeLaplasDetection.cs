@@ -53,7 +53,7 @@ namespace Edge_detection
                 double sigma = 0;
                 if (radioButton2.Checked)
                     sigma = (double)numericUpDown4.Value;
-                afterGauss = Filters.GaussianFilter(afterGrey, sigma);
+                afterGauss = Filters.GaussianFilter(afterGrey, sigma, false);
             }
             else
                 afterGauss = afterGrey;
