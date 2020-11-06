@@ -62,15 +62,14 @@ namespace Edge_detection
         }
 
         
-        public static Bitmap FadeLaplassThreshold(Bitmap bmp, int border)
+        public static Bitmap SingleThreshold(Bitmap bmp, int border)
         {
             Bitmap resbmp = new Bitmap(bmp);
-            byte brightness;
             for (int i = 0; i < bmp.Width - 1; i++)
             {
                 for (int j = 0; j < bmp.Height - 1; j++)
                 {
-                    brightness = bmp.GetPixel(i, j).B;
+                    var brightness = bmp.GetPixel(i, j).B;
                     if (brightness < border)
                         brightness = 0;
                     else
@@ -81,7 +80,7 @@ namespace Edge_detection
             return resbmp;
         }
         
-        public static Bitmap FadeLaplassThresholdColor(Bitmap bmp, int border)
+        public static Bitmap SingleThresholdColor(Bitmap bmp, int border)
         {
             Bitmap resbmp = new Bitmap(bmp);
             for (int i = 0; i < bmp.Width - 1; i++)
@@ -113,6 +112,22 @@ namespace Edge_detection
                 }
             }
             return bmp;
+        }
+
+        public static Bitmap ImposeContours(Bitmap src, Bitmap contours, int threshold)
+        {
+            Bitmap dst = new Bitmap(src);
+            for (int i = 0; i < src.Width; i++)
+            {
+                for (int j = 0; j < src.Height; j++)
+                {
+                    var pix = contours.GetPixel(i, j);
+                    if (pix.B > threshold)
+                        dst.SetPixel(i,j, Color.FromArgb(pix.B,0,255,0));
+                }
+            }
+
+            return dst;
         }
     }
 }

@@ -23,9 +23,9 @@ namespace Edge_detection
             this.original = original;
             this.type = type;
 
-            StartHough();
+            pictureBox2.Image = original;
         }
-
+        
         private void StartHough()
         {
             switch (type)
@@ -77,6 +77,8 @@ namespace Edge_detection
             SwitchEnableElements(false);
 
             trackBar2.Visible = false;
+            label2.Visible = false;
+            numericUpDown2.Visible = false;
 
             int tr = trackBar1.Value;
 
@@ -115,6 +117,31 @@ namespace Edge_detection
         private void trackBar1_MouseUp(object sender, MouseEventArgs e)
         {
             StartHough();
+        }
+
+        private void HoughForm_Load(object sender, EventArgs e)
+        {
+            StartHough();
+        }
+
+        private void trackBar1_Scroll(object sender, EventArgs e)
+        {
+            numericUpDown1.Value = trackBar1.Value;
+        }
+
+        private void trackBar2_Scroll(object sender, EventArgs e)
+        {
+            numericUpDown2.Value = trackBar2.Value;
+        }
+
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+        {
+            trackBar1.Value = (int) numericUpDown1.Value;
+        }
+
+        private void numericUpDown2_ValueChanged(object sender, EventArgs e)
+        {
+            trackBar2.Value = (int) numericUpDown2.Value;
         }
     }
 }

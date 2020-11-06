@@ -72,6 +72,13 @@
             this.pictureBox12 = new System.Windows.Forms.PictureBox();
             this.pictureBox11 = new System.Windows.Forms.PictureBox();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.button3 = new System.Windows.Forms.Button();
+            this.trackBar6 = new System.Windows.Forms.TrackBar();
+            this.label6 = new System.Windows.Forms.Label();
+            this.numericUpDown7 = new System.Windows.Forms.NumericUpDown();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize) (this.pictureBox10)).BeginInit();
@@ -96,6 +103,9 @@
             ((System.ComponentModel.ISupportInitialize) (this.pictureBox12)).BeginInit();
             ((System.ComponentModel.ISupportInitialize) (this.pictureBox11)).BeginInit();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize) (this.trackBar6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize) (this.numericUpDown7)).BeginInit();
+            this.groupBox8.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox2
@@ -126,7 +136,7 @@
             // 
             this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {"Метод на основе градиента", "Метод на основе лаплассиана", "Фильтр Собеля", "Фильтр Превитта", "Метод Кэнни", "Марр-Хилдрет"});
+            this.comboBox1.Items.AddRange(new object[] {"Метод на основе градиента", "Метод на основе лаплассиана", "Фильтр Собеля", "Фильтр Превитта", "Метод Кэнни", "Метод Марр-Хилдрет"});
             this.comboBox1.Location = new System.Drawing.Point(13, 70);
             this.comboBox1.Margin = new System.Windows.Forms.Padding(2);
             this.comboBox1.Name = "comboBox1";
@@ -282,6 +292,7 @@
             this.trackBar1.TickFrequency = 2;
             this.trackBar1.Value = 3;
             this.trackBar1.Visible = false;
+            this.trackBar1.ValueChanged += new System.EventHandler(this.trackBar1_ValueChanged);
             // 
             // label2
             // 
@@ -307,6 +318,7 @@
             this.numericUpDown5.TabIndex = 125;
             this.numericUpDown5.Value = new decimal(new int[] {3, 0, 0, 0});
             this.numericUpDown5.Visible = false;
+            this.numericUpDown5.ValueChanged += new System.EventHandler(this.numericUpDown5_ValueChanged);
             // 
             // groupBox4
             // 
@@ -464,6 +476,7 @@
             this.trackBar3.TabIndex = 117;
             this.trackBar3.TickStyle = System.Windows.Forms.TickStyle.None;
             this.trackBar3.Value = 100;
+            this.trackBar3.ValueChanged += new System.EventHandler(this.trackBar3_ValueChanged);
             // 
             // numericUpDown2
             // 
@@ -474,6 +487,7 @@
             this.numericUpDown2.Size = new System.Drawing.Size(40, 20);
             this.numericUpDown2.TabIndex = 124;
             this.numericUpDown2.Value = new decimal(new int[] {100, 0, 0, 0});
+            this.numericUpDown2.ValueChanged += new System.EventHandler(this.numericUpDown2_ValueChanged);
             // 
             // numericUpDown1
             // 
@@ -485,6 +499,7 @@
             this.numericUpDown1.Size = new System.Drawing.Size(40, 20);
             this.numericUpDown1.TabIndex = 125;
             this.numericUpDown1.Value = new decimal(new int[] {10, 0, 0, 0});
+            this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
             // 
             // label3
             // 
@@ -520,6 +535,7 @@
             this.trackBar2.TabIndex = 119;
             this.trackBar2.TickStyle = System.Windows.Forms.TickStyle.None;
             this.trackBar2.Value = 10;
+            this.trackBar2.ValueChanged += new System.EventHandler(this.trackBar2_Scroll);
             // 
             // pictureBox1
             // 
@@ -550,8 +566,8 @@
             this.groupBox6.Controls.Add(this.trackBar5);
             this.groupBox6.Controls.Add(this.trackBar3);
             this.groupBox6.Controls.Add(this.label3);
-            this.groupBox6.Controls.Add(this.numericUpDown1);
             this.groupBox6.Controls.Add(this.numericUpDown2);
+            this.groupBox6.Controls.Add(this.numericUpDown1);
             this.groupBox6.Controls.Add(this.label5);
             this.groupBox6.Controls.Add(this.numericUpDown6);
             this.groupBox6.Location = new System.Drawing.Point(5, 293);
@@ -576,6 +592,7 @@
             this.trackBar5.TickStyle = System.Windows.Forms.TickStyle.None;
             this.trackBar5.Value = 100;
             this.trackBar5.Visible = false;
+            this.trackBar5.ValueChanged += new System.EventHandler(this.trackBar5_ValueChanged);
             // 
             // label5
             // 
@@ -600,11 +617,12 @@
             this.numericUpDown6.TabIndex = 125;
             this.numericUpDown6.Value = new decimal(new int[] {100, 0, 0, 0});
             this.numericUpDown6.Visible = false;
+            this.numericUpDown6.ValueChanged += new System.EventHandler(this.numericUpDown6_ValueChanged);
             // 
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte) (204)));
-            this.button1.Location = new System.Drawing.Point(5, 517);
+            this.button1.Location = new System.Drawing.Point(5, 950);
             this.button1.Margin = new System.Windows.Forms.Padding(2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(240, 30);
@@ -617,7 +635,7 @@
             // 
             this.pictureBox13.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox13.Image = global::Edge_detection.Properties.Resources.picture;
-            this.pictureBox13.Location = new System.Drawing.Point(323, 949);
+            this.pictureBox13.Location = new System.Drawing.Point(312, 949);
             this.pictureBox13.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox13.Name = "pictureBox13";
             this.pictureBox13.Size = new System.Drawing.Size(26, 31);
@@ -630,7 +648,7 @@
             // 
             this.pictureBox12.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox12.Image = global::Edge_detection.Properties.Resources.zoom_out;
-            this.pictureBox12.Location = new System.Drawing.Point(323, 914);
+            this.pictureBox12.Location = new System.Drawing.Point(312, 914);
             this.pictureBox12.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox12.Name = "pictureBox12";
             this.pictureBox12.Size = new System.Drawing.Size(26, 31);
@@ -643,7 +661,7 @@
             // 
             this.pictureBox11.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox11.Image = global::Edge_detection.Properties.Resources.zoom_in;
-            this.pictureBox11.Location = new System.Drawing.Point(323, 878);
+            this.pictureBox11.Location = new System.Drawing.Point(312, 879);
             this.pictureBox11.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox11.Name = "pictureBox11";
             this.pictureBox11.Size = new System.Drawing.Size(26, 31);
@@ -662,11 +680,103 @@
             this.panel2.Size = new System.Drawing.Size(1016, 577);
             this.panel2.TabIndex = 116;
             // 
+            // button3
+            // 
+            this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte) (204)));
+            this.button3.Location = new System.Drawing.Point(15, 88);
+            this.button3.Margin = new System.Windows.Forms.Padding(2);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(133, 39);
+            this.button3.TabIndex = 127;
+            this.button3.Text = "Наложить контуры на изображение\r\n";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // trackBar6
+            // 
+            this.trackBar6.LargeChange = 0;
+            this.trackBar6.Location = new System.Drawing.Point(15, 38);
+            this.trackBar6.Maximum = 254;
+            this.trackBar6.Minimum = 1;
+            this.trackBar6.Name = "trackBar6";
+            this.trackBar6.Size = new System.Drawing.Size(162, 45);
+            this.trackBar6.SmallChange = 0;
+            this.trackBar6.TabIndex = 131;
+            this.trackBar6.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.trackBar6.Value = 100;
+            this.trackBar6.ValueChanged += new System.EventHandler(this.trackBar6_ValueChanged);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte) (204)));
+            this.label6.Location = new System.Drawing.Point(15, 22);
+            this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(81, 13);
+            this.label6.TabIndex = 132;
+            this.label6.Text = "Порог контура";
+            // 
+            // numericUpDown7
+            // 
+            this.numericUpDown7.Location = new System.Drawing.Point(182, 38);
+            this.numericUpDown7.Margin = new System.Windows.Forms.Padding(2);
+            this.numericUpDown7.Maximum = new decimal(new int[] {254, 0, 0, 0});
+            this.numericUpDown7.Minimum = new decimal(new int[] {1, 0, 0, 0});
+            this.numericUpDown7.Name = "numericUpDown7";
+            this.numericUpDown7.Size = new System.Drawing.Size(40, 20);
+            this.numericUpDown7.TabIndex = 133;
+            this.numericUpDown7.Value = new decimal(new int[] {100, 0, 0, 0});
+            this.numericUpDown7.ValueChanged += new System.EventHandler(this.numericUpDown7_ValueChanged);
+            // 
+            // groupBox8
+            // 
+            this.groupBox8.Controls.Add(this.numericUpDown7);
+            this.groupBox8.Controls.Add(this.trackBar6);
+            this.groupBox8.Controls.Add(this.button3);
+            this.groupBox8.Controls.Add(this.label6);
+            this.groupBox8.Location = new System.Drawing.Point(1386, 837);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Size = new System.Drawing.Size(238, 143);
+            this.groupBox8.TabIndex = 134;
+            this.groupBox8.TabStop = false;
+            this.groupBox8.Text = "Наложение контуров";
+            this.groupBox8.Visible = false;
+            // 
+            // button4
+            // 
+            this.button4.Enabled = false;
+            this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte) (204)));
+            this.button4.Location = new System.Drawing.Point(5, 550);
+            this.button4.Margin = new System.Windows.Forms.Padding(2);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(238, 30);
+            this.button4.TabIndex = 135;
+            this.button4.Text = "Поиск кругов";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // button5
+            // 
+            this.button5.Enabled = false;
+            this.button5.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte) (204)));
+            this.button5.Location = new System.Drawing.Point(5, 584);
+            this.button5.Margin = new System.Windows.Forms.Padding(2);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(238, 30);
+            this.button5.TabIndex = 135;
+            this.button5.Text = "Поиск линий";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
             // ImageProcessingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1904, 991);
+            this.Controls.Add(this.button5);
+            this.Controls.Add(this.button4);
+            this.Controls.Add(this.groupBox8);
             this.Controls.Add(this.pictureBox13);
             this.Controls.Add(this.pictureBox12);
             this.Controls.Add(this.pictureBox11);
@@ -713,8 +823,24 @@
             ((System.ComponentModel.ISupportInitialize) (this.pictureBox12)).EndInit();
             ((System.ComponentModel.ISupportInitialize) (this.pictureBox11)).EndInit();
             this.panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize) (this.trackBar6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize) (this.numericUpDown7)).EndInit();
+            this.groupBox8.ResumeLayout(false);
+            this.groupBox8.PerformLayout();
             this.ResumeLayout(false);
         }
+
+        private System.Windows.Forms.Button button5;
+
+        private System.Windows.Forms.Button button4;
+
+        private System.Windows.Forms.GroupBox groupBox8;
+
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.NumericUpDown numericUpDown7;
+        private System.Windows.Forms.TrackBar trackBar6;
+
+        private System.Windows.Forms.Button button3;
 
         private System.Windows.Forms.Panel panel2;
 

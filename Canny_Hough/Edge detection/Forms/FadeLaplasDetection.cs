@@ -66,7 +66,7 @@ namespace Edge_detection
                 afterFade = Edges.LaplacianDetection(afterGauss);
             pictureBox4.Invoke(new Action(() => pictureBox4.Image = new Bitmap(afterFade)));
 
-            Bitmap afterThreshold = ImageProcessing.FadeLaplassThreshold(afterFade, trackBar2.Value);
+            Bitmap afterThreshold = ImageProcessing.SingleThreshold(afterFade, trackBar2.Value);
             pictureBox5.Invoke(new Action(() => pictureBox5.Image = new Bitmap(afterThreshold)));
 
             ShowSelectedImage();
@@ -101,7 +101,7 @@ namespace Edge_detection
 
         private void WorkThresholdOnly()
         {
-            Bitmap afterThreshold = ImageProcessing.FadeLaplassThreshold(afterFade, trackBar2.Value);
+            Bitmap afterThreshold = ImageProcessing.SingleThreshold(afterFade, trackBar2.Value);
             pictureBox5.Invoke(new Action(() => pictureBox5.Image = afterThreshold));
 
             ShowSelectedImage();

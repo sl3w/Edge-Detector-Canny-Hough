@@ -14,12 +14,12 @@ namespace Edge_detection
         private static Color WhiteBorder = Color.FromArgb(255, 255, 255);
         private static Color NotBorder = Color.FromArgb(0, 0, 0);
 
-        private static int[,] SobelX = new int[,] {
+        private static int[,] SobelX = {
                                  { 1, 2, 1 },
                                  { 0, 0, 0 },
                                  { -1, -2, -1 } };
 
-        private static int[,] SobelY = new int[,] {
+        private static int[,] SobelY = {
                                  { -1, 0, 1 },
                                  { -2, 0, 2 },
                                  { -1, 0, 1 } };
@@ -27,6 +27,16 @@ namespace Edge_detection
         private static int[,] newSobelX = { { -1, 0, 1 }, { -2, 0, 2 }, { -1, 0, 1 } };
         private static int[,] newSobelY = { { 1, 2, 1 }, { 0, 0, 0 }, { -1, -2, -1 } };
 
+        private static int[,] PrewittX = {
+            { 1, 1, 1 },
+            { 0, 0, 0 },
+            { -1, -1, -1 } };
+
+        private static int[,] PrewittY = {
+            { -1, 0, 1 },
+            { -1, 0, 1 },
+            { -1, 0, 1 } };
+        
         //фильтр Собеля
         public static Bitmap SobelConvolve(Bitmap bmp)
         {
@@ -42,8 +52,8 @@ namespace Edge_detection
                         for (int l = -1; l < 2; l++)
                             mas[k + 1, l + 1] = bmp.GetPixel(i + k, j + l).B;
 
-                    int ggx = SobelMult(mas, SobelX);
-                    int ggy = SobelMult(mas, SobelY);
+                    int ggx = SobelPrewittMult(mas, SobelX);
+                    int ggy = SobelPrewittMult(mas, SobelY);
 
                     int brightness = (int)Math.Sqrt(Math.Pow(ggx, 2) + Math.Pow(ggy, 2));
                     if (brightness > 255) brightness = 255;
@@ -77,22 +87,101 @@ namespace Edge_detection
                         masB[k + 1, l + 1] = bmp.GetPixel(i + k, j + l).B;
                     }
 
-                    int ggxR = SobelMult(masR, SobelX);
-                    int ggyR = SobelMult(masR, SobelY);
+                    int ggxR = SobelPrewittMult(masR, SobelX);
+                    int ggyR = SobelPrewittMult(masR, SobelY);
                     
                     int red = (int)Math.Sqrt(Math.Pow(ggxR, 2) + Math.Pow(ggyR, 2));
                     if (red > 255) red = 255;
                     else if (red < 0) red = 0;
                     
-                    int ggxG = SobelMult(masG, SobelX);
-                    int ggyG = SobelMult(masG, SobelY);
+                    int ggxG = SobelPrewittMult(masG, SobelX);
+                    int ggyG = SobelPrewittMult(masG, SobelY);
                     
                     int green = (int)Math.Sqrt(Math.Pow(ggxG, 2) + Math.Pow(ggyG, 2));
                     if (green > 255) green = 255;
                     else if (green < 0) green = 0;
                     
-                    int ggxB = SobelMult(masB, SobelX);
-                    int ggyB = SobelMult(masB, SobelY);
+                    int ggxB = SobelPrewittMult(masB, SobelX);
+                    int ggyB = SobelPrewittMult(masB, SobelY);
+
+                    int blue = (int)Math.Sqrt(Math.Pow(ggxB, 2) + Math.Pow(ggyB, 2));
+                    if (blue > 255) blue = 255;
+                    else if (blue < 0) blue = 0;
+                    
+                    resbmp.SetPixel(i, j, Color.FromArgb(red, green, blue));
+
+                    //double a = Math.Atan2(ggy, ggx) * 180 / Math.PI;
+                    //angles[i, j] = GetAngleMult45(a);
+                }
+            }
+            return resbmp;
+        }
+        
+        public static Bitmap PrewittConvolve(Bitmap bmp)
+        {
+            Bitmap resbmp = new Bitmap(bmp);
+            angles = new double[bmp.Width, bmp.Height];
+            for (int i = 1; i < bmp.Width - 1; i++)
+            {
+                for (int j = 1; j < bmp.Height - 1; j++)
+                {
+                    int[,] mas = new int[3, 3];
+
+                    for (int k = -1; k < 2; k++)
+                        for (int l = -1; l < 2; l++)
+                            mas[k + 1, l + 1] = bmp.GetPixel(i + k, j + l).B;
+
+                    int ggx = SobelPrewittMult(mas, PrewittX);
+                    int ggy = SobelPrewittMult(mas, PrewittY);
+
+                    int brightness = (int)Math.Sqrt(Math.Pow(ggx, 2) + Math.Pow(ggy, 2));
+                    if (brightness > 255) brightness = 255;
+                    else if (brightness < 0) brightness = 0;
+                    resbmp.SetPixel(i, j, Color.FromArgb(brightness, brightness, brightness));
+
+                    //double a = Math.Atan2(ggy, ggx) * 180 / Math.PI;
+                    //angles[i, j] = GetAngleMult45(a);
+                }
+            }
+            return resbmp;
+        }
+        
+        public static Bitmap PrewittConvolveColor(Bitmap bmp)
+        {
+            Bitmap resbmp = new Bitmap(bmp);
+            angles = new double[bmp.Width, bmp.Height];
+            for (int i = 1; i < bmp.Width - 1; i++)
+            {
+                for (int j = 1; j < bmp.Height - 1; j++)
+                {
+                    int[,] masR = new int[3, 3];
+                    int[,] masG = new int[3, 3];
+                    int[,] masB = new int[3, 3];
+
+                    for (int k = -1; k < 2; k++)
+                    for (int l = -1; l < 2; l++)
+                    {
+                        masR[k + 1, l + 1] = bmp.GetPixel(i + k, j + l).R;
+                        masG[k + 1, l + 1] = bmp.GetPixel(i + k, j + l).G;
+                        masB[k + 1, l + 1] = bmp.GetPixel(i + k, j + l).B;
+                    }
+
+                    int ggxR = SobelPrewittMult(masR, PrewittX);
+                    int ggyR = SobelPrewittMult(masR, PrewittY);
+                    
+                    int red = (int)Math.Sqrt(Math.Pow(ggxR, 2) + Math.Pow(ggyR, 2));
+                    if (red > 255) red = 255;
+                    else if (red < 0) red = 0;
+                    
+                    int ggxG = SobelPrewittMult(masG, PrewittX);
+                    int ggyG = SobelPrewittMult(masG, PrewittY);
+                    
+                    int green = (int)Math.Sqrt(Math.Pow(ggxG, 2) + Math.Pow(ggyG, 2));
+                    if (green > 255) green = 255;
+                    else if (green < 0) green = 0;
+                    
+                    int ggxB = SobelPrewittMult(masB, PrewittX);
+                    int ggyB = SobelPrewittMult(masB, PrewittY);
 
                     int blue = (int)Math.Sqrt(Math.Pow(ggxB, 2) + Math.Pow(ggyB, 2));
                     if (blue > 255) blue = 255;
@@ -107,7 +196,7 @@ namespace Edge_detection
             return resbmp;
         }
 
-        private static int SobelMult(int[,] matr, int[,] g)
+        private static int SobelPrewittMult(int[,] matr, int[,] g)
         {
             int br = 0;
             for (int i = 0; i < g.GetLength(0); i++)
