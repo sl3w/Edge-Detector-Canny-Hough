@@ -304,7 +304,7 @@
             // 
             this.trackBar1.LargeChange = 2;
             this.trackBar1.Location = new System.Drawing.Point(5, 54);
-            this.trackBar1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.trackBar1.Margin = new System.Windows.Forms.Padding(4);
             this.trackBar1.Maximum = 11;
             this.trackBar1.Minimum = 1;
             this.trackBar1.Name = "trackBar1";
@@ -397,7 +397,7 @@
             // 
             this.trackBar4.LargeChange = 0;
             this.trackBar4.Location = new System.Drawing.Point(1465, 69);
-            this.trackBar4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.trackBar4.Margin = new System.Windows.Forms.Padding(4);
             this.trackBar4.Maximum = 30;
             this.trackBar4.Name = "trackBar4";
             this.trackBar4.Size = new System.Drawing.Size(216, 56);
@@ -506,14 +506,14 @@
             this.panel1.Location = new System.Drawing.Point(351, 178);
             this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1530, 304);
+            this.panel1.Size = new System.Drawing.Size(1530, 230);
             this.panel1.TabIndex = 116;
             // 
             // trackBar3
             // 
             this.trackBar3.LargeChange = 0;
             this.trackBar3.Location = new System.Drawing.Point(13, 126);
-            this.trackBar3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.trackBar3.Margin = new System.Windows.Forms.Padding(4);
             this.trackBar3.Maximum = 255;
             this.trackBar3.Minimum = 1;
             this.trackBar3.Name = "trackBar3";
@@ -521,7 +521,7 @@
             this.trackBar3.SmallChange = 0;
             this.trackBar3.TabIndex = 117;
             this.trackBar3.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.trackBar3.Value = 100;
+            this.trackBar3.Value = 75;
             this.trackBar3.ValueChanged += new System.EventHandler(this.trackBar3_ValueChanged);
             // 
             // numericUpDown2
@@ -537,7 +537,7 @@
             this.numericUpDown2.Size = new System.Drawing.Size(53, 22);
             this.numericUpDown2.TabIndex = 124;
             this.numericUpDown2.Value = new decimal(new int[] {
-            100,
+            75,
             0,
             0,
             0});
@@ -591,7 +591,7 @@
             // 
             this.trackBar2.LargeChange = 0;
             this.trackBar2.Location = new System.Drawing.Point(17, 49);
-            this.trackBar2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.trackBar2.Margin = new System.Windows.Forms.Padding(4);
             this.trackBar2.Maximum = 255;
             this.trackBar2.Minimum = 1;
             this.trackBar2.Name = "trackBar2";
@@ -607,7 +607,7 @@
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(1000, 480);
+            this.pictureBox1.Size = new System.Drawing.Size(1000, 555);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 126;
             this.pictureBox1.TabStop = false;
@@ -648,7 +648,7 @@
             // 
             this.trackBar5.LargeChange = 0;
             this.trackBar5.Location = new System.Drawing.Point(17, 49);
-            this.trackBar5.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.trackBar5.Margin = new System.Windows.Forms.Padding(4);
             this.trackBar5.Maximum = 255;
             this.trackBar5.Minimum = 1;
             this.trackBar5.Name = "trackBar5";
@@ -712,7 +712,7 @@
             // 
             this.pictureBox13.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox13.Image = global::Edge_detection.Properties.Resources.picture;
-            this.pictureBox13.Location = new System.Drawing.Point(416, 1168);
+            this.pictureBox13.Location = new System.Drawing.Point(1498, 546);
             this.pictureBox13.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pictureBox13.Name = "pictureBox13";
             this.pictureBox13.Size = new System.Drawing.Size(35, 38);
@@ -725,7 +725,7 @@
             // 
             this.pictureBox12.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox12.Image = global::Edge_detection.Properties.Resources.zoom_out;
-            this.pictureBox12.Location = new System.Drawing.Point(416, 1125);
+            this.pictureBox12.Location = new System.Drawing.Point(1498, 496);
             this.pictureBox12.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pictureBox12.Name = "pictureBox12";
             this.pictureBox12.Size = new System.Drawing.Size(35, 38);
@@ -738,7 +738,7 @@
             // 
             this.pictureBox11.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox11.Image = global::Edge_detection.Properties.Resources.zoom_in;
-            this.pictureBox11.Location = new System.Drawing.Point(416, 1082);
+            this.pictureBox11.Location = new System.Drawing.Point(1498, 446);
             this.pictureBox11.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pictureBox11.Name = "pictureBox11";
             this.pictureBox11.Size = new System.Drawing.Size(35, 38);
@@ -751,10 +751,10 @@
             // 
             this.panel2.AutoScroll = true;
             this.panel2.Controls.Add(this.pictureBox1);
-            this.panel2.Location = new System.Drawing.Point(471, 496);
+            this.panel2.Location = new System.Drawing.Point(471, 421);
             this.panel2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1000, 480);
+            this.panel2.Size = new System.Drawing.Size(1000, 555);
             this.panel2.TabIndex = 116;
             // 
             // button3
@@ -773,7 +773,7 @@
             // 
             this.trackBar6.LargeChange = 0;
             this.trackBar6.Location = new System.Drawing.Point(20, 47);
-            this.trackBar6.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.trackBar6.Margin = new System.Windows.Forms.Padding(4);
             this.trackBar6.Maximum = 254;
             this.trackBar6.Minimum = 1;
             this.trackBar6.Name = "trackBar6";
@@ -824,10 +824,10 @@
             this.groupBox8.Controls.Add(this.trackBar6);
             this.groupBox8.Controls.Add(this.button3);
             this.groupBox8.Controls.Add(this.label6);
-            this.groupBox8.Location = new System.Drawing.Point(1478, 800);
-            this.groupBox8.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox8.Location = new System.Drawing.Point(1478, 615);
+            this.groupBox8.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox8.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox8.Size = new System.Drawing.Size(317, 176);
             this.groupBox8.TabIndex = 134;
             this.groupBox8.TabStop = false;
